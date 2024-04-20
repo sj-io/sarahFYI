@@ -1,0 +1,15 @@
+---
+title: "about"
+---
+
+hey, I'm **sarah**, a 29-year-old from memphis.
+
+[here's a playlist of some of my favorite songs.](https://open.spotify.com/playlist/2m9yQdlbkVmfCSiSJ5vaDb)
+
+I built this site using [quarto](https://quarto.org/).
+
+#### social media
+
+- **twitch**: sarahFYI
+- **tiktok**: *fartata (inactive)*
+- no **twitter**, **instagram**, **facebook**, or **snapchat**

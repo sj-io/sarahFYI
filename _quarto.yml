@@ -5,10 +5,15 @@ website:
   title: "sarah.fyi"
   search: false
   navbar:
+    title: false
+    background: none
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
+        icon: house-fill
+        text: " "
+      - href: about.qmd
+        icon: person-arms-up
+        text: " "
 
 format:
   html:

@@ -1,0 +1,44 @@
+/*-- scss:defaults --*/
+$white:   #e8eaf6 !default;
+$blue:    #303F9F !default;
+$indigo:  #0c2461 !default;
+$green:   #66bb6a !default;
+$teal:    #079992 !default;
+$blue-2:  #7986cb !default;
+
+// body defaults
+$body-bg:         $indigo !default;
+$body-color:      $white !default;
+// $body-text-align: center !default;
+
+// links
+$link-color:      $blue-2 !default;
+
+/*-- scss:rules --*/
+body {
+  background-image: url("img/twinkle-star.gif");
+}
+
+main {
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+
+.border-bottom {
+  border-bottom: none !important;
+}
+
+.navbar {
+  li a {
+    display: block;
+    margin-right: 2.5rem;
+    font-size: 2.5em;
+    color: $white;
+  }
+  li a:hover {
+    color: $blue;
+    transform: rotate(360deg);
+    transition: transform 2s;
+    transition-timing-function: ease-in-out;
+  }
+}
