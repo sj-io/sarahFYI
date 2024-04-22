@@ -6,10 +6,12 @@ hey, I'm **sarah**, a 29-year-old from memphis.
 
 [here's a playlist of some of my favorite songs.](https://open.spotify.com/playlist/2m9yQdlbkVmfCSiSJ5vaDb)
 
-I built this site using [quarto](https://quarto.org/).
+I built this site using [quarto](https://quarto.org/). you can view the source code [on github](https://github.com/sj-io/sarahFYI).
 
 #### social media
 
-- **twitch**: sarahFYI
-- **tiktok**: *fartata (inactive)*
+- **twitch**: [sarahFYI](https://www.twitch.tv/sarahFYI)
+- **tiktok**: *[fartata](https://www.tiktok.com/@farttata) (inactive)*
+- **vimeo**: *[sarahjohnson](https://vimeo.com/sarahjohnson) (inactive)*
+- **tumblr**: *[sarahjohnson](https://sarahjohnson.tumblr.com) (inactive)*
 - no **twitter**, **instagram**, **facebook**, or **snapchat**
