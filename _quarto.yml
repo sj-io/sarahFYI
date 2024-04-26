@@ -14,6 +14,10 @@ website:
       - href: about.qmd
         icon: person-arms-up
         text: " "
+      - icon: car-front-fill
+        href: mk8dx/index.qmd
+        text: " "
+        aria-label: "mario kart"
 
 format:
   html:
