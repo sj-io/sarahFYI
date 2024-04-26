@@ -1,0 +1,75 @@
+---
+title: "speedruns"
+format: 
+  dashboard:
+    orientation: columns
+---
+
+```{r}
+# devtools::install_github("sj-io/mk8dx")
+library(mk8dx)
+library(tidyverse)
+library(plotly)
+```
+
+```{r}
+split_path <- "/Users/sarah/Projects/data/mario-kart/splits/"
+all_splits <- mk_lss(split_path)
+```
+
+```{r}
+not_run <- all_splits |> filter(total_attempts == 0)
+runs <- all_splits |> filter(total_attempts != 0)
+```
+
+```{r}
+the_48 <- runs |> filter(category == "48 Tracks")
+the_32 <- runs |> filter(category == "32 Tracks")
+the_cups <- runs |> filter(str_ends(category, " Cups"))
+the_cups <- the_cups |> select(category, individual_cup, everything())
+the_cups <- the_cups |> left_join(tracks, by = c("segment_name" = "trk"))
+```
+
+## 48 Tracks
+
+```{r warning=FALSE, fig.height=8, fig.width=4.5, fig.dpi=300}
+#| title: "Time Distributions"
+complete_cups <- the_cups |> 
+  filter(!is.na(segment_name) & trk_ID <= 48) |> 
+  arrange(trk_ID) |> 
+  mutate(track = 
+           if_else(!is.na(console), str_c(track, " [", console, "]"), track) |> fct_inorder()) |> 
+  mutate(sd = sd(segment_real_time), .by = "track")
+
+cups_violin <- complete_cups |> 
+  ggplot(aes(track, segment_real_time)) +
+  geom_violin(scale = "width", aes(fill = sd, color = sd)) +
+  stat_summary(fun = "mean", geom = "crossbar", size = .2, aes(color = sd)) +
+  stat_summary(fun = "median", geom = "point", size = .4) +
+  scale_fill_gradient(low = "darkcyan", high = "plum") +
+  scale_color_gradient(low = "darkcyan", high = "plum") +
+  scale_y_time() +
+  scale_x_discrete(limits = rev) +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "",
+       y = "") +
+  theme(axis.text.x = element_text(angle = 45,
+                                   hjust = 0.98,
+                                   vjust = 0.9),
+        axis.text = element_text(size = 8),
+        axis.ticks = element_line(size = .2),
+        panel.grid = element_line(size = .2),
+        panel.border = element_rect(fill = NA, size = .2),
+        legend.position = "none")
+
+ggplotly(cups_violin)
+```
+
+
+## Cup Runs
+
+```{r}
+knitr::kable(complete_cups)
+```
+
