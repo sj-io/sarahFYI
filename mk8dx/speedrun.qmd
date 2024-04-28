@@ -1,8 +1,10 @@
 ---
-title: "speedruns"
+title: "mk8dx speedruns"
 format: 
   dashboard:
     orientation: columns
+execute: 
+  freeze: auto
 ---
 
 ```{r}
@@ -12,25 +14,111 @@ library(tidyverse)
 library(plotly)
 ```
 
-```{r}
-split_path <- "/Users/sarah/Projects/data/mario-kart/splits/"
-all_splits <- mk_lss(split_path)
+```{r, eval=FALSE}
+# define file path to splits
+current_dir <- "/Users/sarah/Projects/data/mario-kart/splits/"
+archive_dir <- "/Users/sarah/Projects/data/mario-kart/splits/archive/cartridge"
+
+# get split data as table
+current_splits <- mk_lss(current_dir)
+archive_splits <- mk_lss(archive_dir) # cartridge splits
+
+# clean up columns w/ same data but diff labels
+archive_splits <- archive_splits |> 
+  mutate(cc = if_else(!is.na(engine_class), engine_class, cc)) |> 
+  select(-engine_class)
+
+# bind new & old data
+all_splits <- bind_rows(current_splits, archive_splits)
+
+# update patch number data
+all_splits <- all_splits |> 
+  mutate(
+    patch_number = case_when(
+      str_detect(patch_number, "^2.3.0") ~ "2.3.0+",
+      .default = "Pre-2.3.0"
+      ))
+
+write_csv(all_splits, "splits.csv")
 ```
 
 ```{r}
-not_run <- all_splits |> filter(total_attempts == 0)
+all_splits <- read_csv("splits.csv")
+```
+
+```{r}
+# not_run <- all_splits |> filter(total_attempts == 0)
 runs <- all_splits |> filter(total_attempts != 0)
 ```
 
 ```{r}
-the_48 <- runs |> filter(category == "48 Tracks")
-the_32 <- runs |> filter(category == "32 Tracks")
+violin_style <- function(df, x_value, y_value) {
+  df |> 
+  ggplot(aes({{x_value}}, {{y_value}})) +
+  geom_violin(scale = "width", aes(fill = sd, color = sd)) +
+  stat_summary(fun = "mean", geom = "crossbar", size = .2, aes(color = sd)) +
+  stat_summary(fun = "median", geom = "point", size = .4) +
+  scale_fill_gradient2(low = "#880E4F", mid = "#E91E63", high = "#e8eaf6") +
+  scale_color_gradient(low = "#FF4081", high = "#e8eaf6") +
+  scale_y_time() +
+  scale_x_discrete(limits = rev) +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "",
+       y = "") +
+  theme(text = element_text(color = "#e8eaf6"),
+        axis.text.x = element_text(angle = 45,
+                                   hjust = 0.98,
+                                   vjust = 0.9, 
+                                   color = "#e8eaf6"),
+        axis.text = element_text(size = 8, color = "#e8eaf6"),
+        axis.ticks = element_line(linewidth = .2, color = "#525DA9"),
+        plot.background = element_rect(fill = NA),
+        panel.background = element_rect(fill = NA),
+        panel.grid = element_line(linewidth = .2, color = "#525DA9"),
+        panel.border = element_rect(fill = NA, linewidth = .2, color = "#e8eaf6"),
+        legend.position = "none")
+}
+```
+
+
+# 48 Tracks
+
+```{r}
+the_48 <- runs |> 
+  filter(category == "48 Tracks") |> 
+  janitor::remove_empty("cols")
+# the_32 <- runs |> filter(category == "32 Tracks")
+```
+
+```{r}
+#| title: "Time Distributions 48 Track"
+complete_48 <- the_48 |> left_join(tracks, by = c("segment_id" = "trk_ID"))
+complete_48 <- complete_48 |> 
+  filter(!is.na(segment_name)) |> 
+  arrange(segment_id) |> 
+  mutate(track = 
+           if_else(!is.na(console), str_c(track, " [", console, "]"), track) |> fct_inorder()) |> 
+  mutate(sd = sd(segment_real_time), .by = "track")
+
+violin_48 <- complete_48 |> violin_style(track, segment_real_time)
+
+ggplotly(violin_48)
+```
+
+
+```{r}
+#| title: "48 Track Table"
+knitr::kable(the_48)
+```
+
+# Cups
+
+```{r}
 the_cups <- runs |> filter(str_ends(category, " Cups"))
 the_cups <- the_cups |> select(category, individual_cup, everything())
 the_cups <- the_cups |> left_join(tracks, by = c("segment_name" = "trk"))
 ```
-
-## 48 Tracks
 
 ```{r warning=FALSE, fig.height=8, fig.width=4.5, fig.dpi=300}
 #| title: "Time Distributions"
@@ -41,35 +129,14 @@ complete_cups <- the_cups |>
            if_else(!is.na(console), str_c(track, " [", console, "]"), track) |> fct_inorder()) |> 
   mutate(sd = sd(segment_real_time), .by = "track")
 
-cups_violin <- complete_cups |> 
-  ggplot(aes(track, segment_real_time)) +
-  geom_violin(scale = "width", aes(fill = sd, color = sd)) +
-  stat_summary(fun = "mean", geom = "crossbar", size = .2, aes(color = sd)) +
-  stat_summary(fun = "median", geom = "point", size = .4) +
-  scale_fill_gradient(low = "darkcyan", high = "plum") +
-  scale_color_gradient(low = "darkcyan", high = "plum") +
-  scale_y_time() +
-  scale_x_discrete(limits = rev) +
-  coord_flip() +
-  theme_minimal() +
-  labs(x = "",
-       y = "") +
-  theme(axis.text.x = element_text(angle = 45,
-                                   hjust = 0.98,
-                                   vjust = 0.9),
-        axis.text = element_text(size = 8),
-        axis.ticks = element_line(size = .2),
-        panel.grid = element_line(size = .2),
-        panel.border = element_rect(fill = NA, size = .2),
-        legend.position = "none")
+cups_violin <- complete_cups |> violin_style(track, segment_real_time)
 
 ggplotly(cups_violin)
 ```
 
 
-## Cup Runs
-
 ```{r}
+#| title: "Cup Table"
 knitr::kable(complete_cups)
 ```
 

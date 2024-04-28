@@ -2,4 +2,4 @@
 title: "mario kart"
 ---
 
-test.
+[speedruns](speedrun.qmd)
