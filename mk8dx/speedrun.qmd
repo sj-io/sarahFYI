@@ -7,14 +7,15 @@ execute:
   freeze: auto
 ---
 
-```{r}
+```{r libs}
 # devtools::install_github("sj-io/mk8dx")
 library(mk8dx)
 library(tidyverse)
+library(reactable)
 library(plotly)
 ```
 
-```{r, eval=FALSE}
+```{r getNewData, eval=FALSE}
 # define file path to splits
 current_dir <- "/Users/sarah/Projects/data/mario-kart/splits/"
 archive_dir <- "/Users/sarah/Projects/data/mario-kart/splits/archive/cartridge"
@@ -42,16 +43,7 @@ all_splits <- all_splits |>
 write_csv(all_splits, "splits.csv")
 ```
 
-```{r}
-all_splits <- read_csv("splits.csv")
-```
-
-```{r}
-# not_run <- all_splits |> filter(total_attempts == 0)
-runs <- all_splits |> filter(total_attempts != 0)
-```
-
-```{r}
+```{r theming}
 violin_style <- function(df, x_value, y_value) {
   df |> 
   ggplot(aes({{x_value}}, {{y_value}})) +
@@ -79,37 +71,239 @@ violin_style <- function(df, x_value, y_value) {
         panel.border = element_rect(fill = NA, linewidth = .2, color = "#e8eaf6"),
         legend.position = "none")
 }
+
+options(reactable.theme = reactableTheme(
+  color = "#e8eaf6",
+  backgroundColor = "#303F9F",
+  borderColor = "#0c2461",
+  stripedColor = "#525DA9",
+  highlightColor = "#0c2461",
+  style = list(fontSize = "0.85rem")
+  # inputStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
+  # selectStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
+  # pageButtonHoverStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
+  # pageButtonActiveStyle = list(backgroundColor = "hsl(233, 9%, 28%)")
+))
+
+color_range <- colorRampPalette(c("#e8eaf6", "#E91E63", "#880E4F"), space = "Lab", interpolate = "linear")
 ```
 
+```{r getData}
+all_splits <- read_csv("splits.csv")
+runs <- all_splits |> filter(total_attempts != 0)
+# not_run <- all_splits |> filter(total_attempts == 0)
+```
 
 # 48 Tracks
 
 ```{r}
 the_48 <- runs |> 
+  # narrow table
   filter(category == "48 Tracks") |> 
-  janitor::remove_empty("cols")
-# the_32 <- runs |> filter(category == "32 Tracks")
+  janitor::remove_empty("cols") |> 
+  # get track names
+  left_join(tracks |> select(trk_ID, track, console), by = c("segment_id" = "trk_ID")) |> 
+  mutate(segment_name = if_else(!is.na(console), str_c(track, " [", console, "]"), track)) |> 
+  select(-c(console, track)) |> 
+  # only completed tracks
+  filter(!is.na(segment_id)) |> 
+  # if using multiple split files, correct the summarized values
+  arrange(attempt_started) |> 
+  mutate(attempt_id = cur_group_id(), .by = "attempt_started") |> 
+  mutate(best_segment_real_time = min(segment_real_time, na.rm = TRUE), 
+         .by = "segment_id")
+```
+
+
+## C1 
+
+### R1 Value Boxes {height=18%}
+
+```{r}
+# value boxes
+v_complete_runs <- max(the_48$attempt_id)
+v_run_PB <- seconds_to_period(round(min(the_48$attempt_real_time, na.rm = TRUE)))
+v_most_recent <- max(the_48$attempt_started, na.rm = TRUE) |> as_date()
 ```
 
 ```{r}
-#| title: "Time Distributions 48 Track"
-complete_48 <- the_48 |> left_join(tracks, by = c("segment_id" = "trk_ID"))
-complete_48 <- complete_48 |> 
-  filter(!is.na(segment_name)) |> 
-  arrange(segment_id) |> 
-  mutate(track = 
-           if_else(!is.na(console), str_c(track, " [", console, "]"), track) |> fct_inorder()) |> 
-  mutate(sd = sd(segment_real_time), .by = "track")
+#| content: valuebox
+#| title: "Runs Attempted"
+list(
+  value = v_complete_runs,
+  color = "#303F9F"
+)
+```
 
-violin_48 <- complete_48 |> violin_style(track, segment_real_time)
+```{r}
+#| content: valuebox
+#| title: "Most Recent Run"
+list(
+  value = v_most_recent,
+  color = "#525DA9"
+)
+```
 
-ggplotly(violin_48)
+```{r}
+#| content: valuebox
+#| title: "PB Time"
+list(
+  value = v_run_PB,
+  color = "success"
+)
+```
+
+### R2 Graphs Tabset {.tabset}
+
+```{r}
+#| title: "Improvement"
+
+# only completed attempts
+improvement_48 <- the_48[, c("attempt_id", "attempt_started", "attempt_real_time", "segment_id", "segment_name", "segment_real_time", "best_segment_real_time")] |> 
+  filter(!is.na(attempt_real_time)) |> 
+  mutate(run_real_time = cumsum(segment_real_time), .by = "attempt_id")
+
+# create a start row for each attempt
+start_48 <- improvement_48[, c("attempt_id", "attempt_started", "attempt_real_time")] |>
+  distinct() |>
+  mutate(
+    segment_id = 0,
+    segment_name = "Start",
+    segment_real_time = 0,
+    run_real_time = 0,
+    best_segment_real_time = 0
+  )
+
+improvement_48 <- bind_rows(improvement_48, start_48) |> 
+  arrange(attempt_id, segment_id) |> 
+  mutate(segment_name = fct_inorder(segment_name))
+
+worst_run_48 <- improvement_48 |> 
+  select(attempt_id, attempt_real_time, segment_id, segment_real_time) |> 
+  slice_max(attempt_real_time, by = segment_id, with_ties = FALSE) |> 
+  mutate(worst_run_real_time = cumsum(segment_real_time)) |> 
+  select(segment_id, worst_run_real_time)
+
+improvement_48 <- improvement_48 |> 
+  left_join(worst_run_48, by = "segment_id") |> 
+  mutate(worst_run_diff = worst_run_real_time - run_real_time)
+
+best_possible_time_48 <- improvement_48 |> 
+  select(segment_id, segment_name, best_segment_real_time, worst_run_real_time) |> 
+  distinct() |> 
+  mutate(
+    pb_run_real_time = cumsum(best_segment_real_time),
+    pb_run_diff = worst_run_real_time - pb_run_real_time,
+    attempt_id = 0)
+
+colors_48 <- tibble(
+  attempt_id = unique(improvement_48$attempt_id),
+  color = color_range(length(unique(improvement_48$attempt_id)))
+)  
+
+test_48 <- improvement_48 |> 
+  left_join(colors_48, by = "attempt_id")
+
+traces_48 <- ggplot() +
+  geom_line(data = test_48, 
+            aes(factor(segment_name), worst_run_diff, group = attempt_id, color = color)) + 
+  geom_line(data = best_possible_time_48,
+            aes(factor(segment_name), pb_run_diff, group = attempt_id), color = "gold", alpha = 0.7) +
+  scale_y_time() +
+  scale_color_identity() +
+  # scale_alpha_continuous(range = c(.35, .8)) +
+  labs(x = "",
+       y = "") +
+  theme_minimal() +
+  theme(
+    text = element_text(color = "#e8eaf6"),
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 0.98,
+      vjust = 0.9
+    ),
+    axis.text = element_text(size = 8, color = "#e8eaf6"),
+    axis.ticks = element_line(size = .2),
+    plot.background = element_rect(fill = NA),
+    panel.background = element_rect(fill = NA),
+    panel.grid = element_line(linewidth = .2, color = "#525DA9"),
+    panel.border = element_rect(fill = NA, linewidth = .2, color = "#e8eaf6"),
+    legend.position = "none"
+  )
+
+ggplotly(traces_48)
+```
+
+
+```{r}
+#| title: "Run Times"
+
+complete_48_runs <- the_48 |> 
+  filter(segment_id == 48) |> 
+  select(attempt_id, attempt_started, attempt_real_time)
+
+line_48 <- complete_48_runs |> 
+  ggplot(aes(attempt_id, attempt_real_time)) +
+  geom_line(color = "gold") +
+  scale_y_time() +
+  theme_minimal() +
+  labs(x = "attempt", y = "") +
+  theme(text = element_text(color = "#e8eaf6"),
+        axis.text = element_text(size = 8, color = "#e8eaf6"),
+        plot.background = element_rect(fill = NA),
+        panel.background = element_rect(fill = NA),
+        panel.grid = element_line(linewidth = .2, color = "#525DA9"),
+        panel.border = element_rect(fill = NA, linewidth = .2, color = "#e8eaf6"))
+
+ggplotly(line_48)
 ```
 
 
 ```{r}
 #| title: "48 Track Table"
-knitr::kable(the_48)
+
+the_48_table <- the_48 |> 
+  select(attempt_id:attempt_ended, attempt_real_time, version,
+         segment_id, segment_name, segment_real_time, best_segment_real_time) |> 
+  mutate(pb_diff = round(segment_real_time - best_segment_real_time, 1)) |> 
+  mutate(across(ends_with("real_time"), ~ seconds_to_period(round(.)) |> as.character()))
+
+reactable(the_48_table, striped = TRUE, highlight = TRUE, defaultSortOrder = "desc", defaultSorted = "attempt_id",
+          groupBy = "attempt_id", compact = TRUE, pagination = FALSE,
+          columns = list(
+            attempt_id = colDef("attempt", align = "left"),
+            attempt_started = colDef("date", aggregate = "unique", format = colFormat(date = TRUE)),
+            attempt_ended = colDef("end", aggregate = "unique", format = colFormat(datetime = TRUE), show = FALSE),
+            attempt_real_time = colDef("real time", aggregate = "unique"),
+            segment_id = colDef("segment #"),
+            segment_name = colDef("track", minWidth = 200),
+            segment_real_time = colDef("real time", style = function(value, index) {
+              pb_time <- the_48_table$pb_diff[index]
+                # pb_time <- min(the_48_table$attempt_real_time, na.rm = TRUE)
+                if (!is.na(value) & pb_time == 0) {
+                  list(background = "gold", fontWeight = "bold", color = "#0c2461")
+                } 
+                
+              }),
+            best_segment_real_time = colDef("PB time", show = FALSE),
+            pb_diff = colDef("PB diff"),
+            version = colDef(aggregate = "unique", maxWidth = 75)
+          )
+          )
+```
+
+## C2 Violin {width=350}
+
+```{r}
+#| title: "Segment Times"
+complete_48 <- the_48 |> 
+  arrange(segment_id) |> 
+  mutate(segment_name = fct_inorder(segment_name)) |> 
+  mutate(sd = sd(segment_real_time), .by = "segment_name")
+
+violin_48 <- complete_48 |> violin_style(segment_name, segment_real_time)
+
+ggplotly(violin_48)
 ```
 
 # Cups
@@ -137,6 +331,6 @@ ggplotly(cups_violin)
 
 ```{r}
 #| title: "Cup Table"
-knitr::kable(complete_cups)
+reactable(complete_cups)
 ```
 
