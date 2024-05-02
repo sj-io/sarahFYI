@@ -48,11 +48,11 @@ write_csv(all_splits, "splits.csv")
 violin_style <- function(df, x_value, y_value) {
   df |> 
   ggplot(aes({{x_value}}, {{y_value}})) +
-  geom_violin(scale = "width", aes(fill = sd, color = sd)) +
+  geom_violin(scale = "width", aes(fill = sd, color = sd, text = label), linewidth = .3) +
   stat_summary(fun = "mean", geom = "crossbar", size = .2, aes(color = sd)) +
-  stat_summary(fun = "median", geom = "point", size = .4) +
+  stat_summary(fun = "median", geom = "point", size = .4, aes(color = sd), alpha = .8) +
   scale_fill_gradient2(low = "#880E4F", mid = "#E91E63", high = "#e8eaf6") +
-  scale_color_gradient(low = "#FF4081", high = "#e8eaf6") +
+  scale_color_gradient(low = "#880E4F", high = "#E91E63") +
   scale_y_time() +
   scale_x_discrete(limits = rev) +
   coord_flip() +
@@ -90,6 +90,10 @@ options(reactable.theme = reactableTheme(
 
 # color range for traces plot
 color_range <- colorRampPalette(c("#e8eaf6", "#E91E63", "#880E4F"), space = "Lab", interpolate = "linear")
+
+# time formatting
+
+clean_hms <- function(attempt_real_time) {  round(seconds_to_period({{attempt_real_time}}), 2) }
 ```
 
 ```{r getData}
@@ -131,7 +135,7 @@ complete_48_runs <- the_48 |>
   select(attempt_id, attempt_started, attempt_real_time) |> 
   mutate(label = paste0(
     "<b>Run #", attempt_id, "</b>",
-    "<br><b>Time:</b> ", round(seconds_to_period(attempt_real_time), 2)
+    "<br><b>Time:</b> ", clean_hms(attempt_real_time)
   ))
 
 line_48 <- complete_48_runs |> 
@@ -174,7 +178,7 @@ tbl_attempt_48 <- the_48_table |>
 
 reactable(tbl_attempt_48,
           striped = TRUE, highlight = TRUE, defaultSortOrder = "desc", defaultSorted = "attempt_id", compact = TRUE, pagination = TRUE,
-          paginationType = "simple", defaultPageSize = 13,
+          paginationType = "simple", defaultPageSize = 20,
           # width = 340,
           columns = list(
           attempt_id = colDef("run #", align = "left", maxWidth = 60),
@@ -191,7 +195,7 @@ tbl_segment_48 <- the_48_table |> select(attempt_id, segment_id:pb_diff)
 
 reactable(tbl_segment_48,
           striped = TRUE, highlight = TRUE, defaultSortOrder = "desc", defaultSorted = "attempt_id", compact = TRUE, pagination = TRUE, 
-          paginationType = "simple", defaultPageSize = 12,
+          paginationType = "simple", defaultPageSize = 20,
           searchable = TRUE, wrap = FALSE,
           columns = list(
           attempt_id = colDef("run #", align = "left", maxWidth = 55),
@@ -244,7 +248,7 @@ list(
 #| title: "PB Time"
 list(
   value = v_run_PB,
-  color = "success"
+  color = "warning"
 )
 ```
 
@@ -358,7 +362,8 @@ traces_48_p <- ggplotly(traces_48, tooltip = "text") |>
   layout(
     margin = list(t = 60),
     title = list(text = "Improvement from Slowest Run<br><sup>48 Tracks, 150cc, No Items</sup>"
-    ))
+    )
+    )
 config(traces_48_p, displayModeBar = FALSE)
 ```
 
@@ -367,13 +372,27 @@ config(traces_48_p, displayModeBar = FALSE)
 ```{r}
 #| title: "Segment Times"
 complete_48 <- the_48 |> 
+  select(contains("segment")) |> 
   arrange(segment_id) |> 
   mutate(segment_name = fct_inorder(segment_name)) |> 
-  mutate(sd = sd(segment_real_time), .by = "segment_name")
+  mutate(
+    worst_segment_real_time = max(segment_real_time),
+    sd = sd(segment_real_time), 
+    attempts = n(),
+    label = paste0(
+    "<b>", segment_name, "</b>",
+    "<br><b>Attempts:</b> ", n(),
+    "<br><b>Fastest:</b> ", clean_hms(best_segment_real_time),
+    "<br><b>Slowest:</b> ", clean_hms(worst_segment_real_time),
+    "<br><b>Average:</b> ", clean_hms(mean(segment_real_time)),
+    "<br><b>Median:</b> ", clean_hms(median(segment_real_time)),
+    "<br><b>Std Dev:</b> ", clean_hms(sd)
+  ),
+    .by = "segment_name")
 
 violin_48 <- complete_48 |> violin_style(segment_name, segment_real_time)
 
-violin_48_p <- ggplotly(violin_48) |> 
+violin_48_p <- ggplotly(violin_48, tooltip = "text") |> 
   layout(
     margin = list(t = 0, r = 0, b = 0, l = 0, pad = 0)
     )
@@ -393,11 +412,18 @@ the_cups <- the_cups |> left_join(tracks, by = c("segment_name" = "trk"))
 complete_cups <- the_cups |> 
   filter(!is.na(segment_name) & trk_ID <= 48) |> 
   arrange(trk_ID) |> 
-  mutate(track = 
+  mutate(segment_name = 
            if_else(!is.na(console), str_c(track, " [", console, "]"), track) |> fct_inorder()) |> 
-  mutate(sd = sd(segment_real_time), .by = "track")
+  mutate(
+    worst_segment_real_time = max(segment_real_time),
+    sd = sd(segment_real_time), 
+    attempts = n(),
+    label = paste0(
+    "<b>", segment_name, "</b>"
+  ),
+    .by = "segment_name")
 
-cups_violin <- complete_cups |> violin_style(track, segment_real_time)
+cups_violin <- complete_cups |> violin_style(segment_name, segment_real_time)
 
 ggplotly(cups_violin)
 ```
