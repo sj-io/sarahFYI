@@ -1,22 +1,39 @@
 /*-- scss:defaults --*/
-$white:   #e8eaf6 !default;
-$blue:    #303F9F !default;
-$indigo:  #0c2461 !default;
-$green:   #66bb6a !default;
-$teal:    #079992 !default;
-$blue-2:  #7986cb !default;
+$blue-100: #D2DDF9 !default;
+$blue-200: #A4BBF4 !default;
+$blue-300: #7799EE !default;
+$blue-400: #4976E9 !default;
+$blue-500: #1C54E3 !default;
+$blue-600: #1643B6 !default;
+$blue-700: #113388 !default;
+$blue-800: #0c2461 !default;
+$blue-900: #06112D !default;
+
+$black:             $blue-900 !default;
 
 // body defaults
-$body-bg:         $indigo !default;
-$body-color:      $white !default;
-// $body-text-align: center !default;
+$body-bg:           $blue-800 !default;
+$body-color:        $blue-100 !default;
+$border-color:      $blue-900 !default;
 
 // links
-$link-color:      $blue-2 !default;
+$link-color:                    $blue-300 !default;
+
+// nav-tabs
+$nav-tabs-link-active-color:    $blue-100 !default;
+$nav-tabs-border-width:         0 !default;
+$nav-link-padding-x:            .5rem !default;
+$nav-link-font-size:            .8em !default;
 
 // card
-$card-cap-bg:     $blue !important;
-$card-bg:         $blue !default;
+$card-bg:                   $blue-600 !default;
+$card-cap-bg:               $blue-700 !important;
+$card-cap-padding-x:        .75rem !important;
+$card-border-width:         0 !default;
+$card-spacer-x:             0 !default;
+// $card-spacer-y:             .5rem !default;
+
+$navbar-padding-y:  null !important;
 
 /*-- scss:rules --*/
 body {
@@ -37,10 +54,10 @@ main {
     display: block;
     margin-right: 2.5rem;
     font-size: 2.5em;
-    color: $white;
+    color: $blue-100;
   }
   li a:hover {
-    color: $blue;
+    color: $blue-500;
     transform: rotate(360deg);
     transition: transform 2s;
     transition-timing-function: ease-in-out;
@@ -54,5 +71,17 @@ main {
   }
   li a:hover {
     transform: none;
+  }
+}
+
+
+.quarto-dashboard {
+  aside.sidebar {
+    margin-top: .9em;
+    padding-top: 2.5em;
+    border-radius: 0.25em;
+  }
+  button.collapse-toggle {
+    margin-top: .9em !important;
   }
 }

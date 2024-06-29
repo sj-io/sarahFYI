@@ -1,5 +1,5 @@
 ---
-title: "mk8dx speedruns"
+title: "MK8DX Speedruns"
 format: 
   dashboard:
     orientation: columns
@@ -7,7 +7,7 @@ execute:
   freeze: auto
 ---
 
-```{r libs}
+```{r libs, message=FALSE}
 # devtools::install_github("sj-io/mk8dx")
 library(mk8dx)
 library(tidyverse)
@@ -51,56 +51,75 @@ violin_style <- function(df, x_value, y_value) {
   geom_violin(scale = "width", aes(fill = sd, color = sd, text = label), linewidth = .3) +
   stat_summary(fun = "mean", geom = "crossbar", size = .2, aes(color = sd)) +
   stat_summary(fun = "median", geom = "point", size = .4, aes(color = sd), alpha = .8) +
-  scale_fill_gradient2(low = "#880E4F", mid = "#E91E63", high = "#e8eaf6") +
-  scale_color_gradient(low = "#880E4F", high = "#E91E63") +
+  scale_fill_gradient2(low = "#8F150A", mid = "#F25041", high = "#FCD3CF") +
+  scale_color_gradient(low = "#8F150A", high = "#F25041") +
   scale_y_time() +
   scale_x_discrete(limits = rev) +
   coord_flip() +
   theme_minimal() +
   labs(x = "",
        y = "") +
-  theme(text = element_text(color = "#e8eaf6"),
+  theme(text = element_text(color = "#D2DDF9"),
         axis.text.x = element_text(angle = 45,
                                    hjust = 0.98,
                                    vjust = 0.9, 
-                                   color = "#e8eaf6"),
-        axis.text = element_text(size = 8, color = "#e8eaf6"),
-        axis.ticks = element_line(linewidth = .2, color = "#525DA9"),
+                                   color = "#D2DDF9"),
+        axis.text = element_text(size = 8, color = "#D2DDF9"),
+        # axis.ticks = element_line(linewidth = .2, color = "#4976E9"),
         plot.background = element_rect(fill = NA),
         panel.background = element_rect(fill = NA),
-        panel.grid = element_line(linewidth = .2, color = "#525DA9"),
-        panel.border = element_rect(fill = NA, linewidth = .2, color = "#e8eaf6"),
+        panel.grid = element_line(linewidth = .2, color = "#4976E9"),
+        # plot.margin = margin(0, 5, 0, 0),
+        # panel.border = element_rect(fill = NA, linewidth = .2, color = "#D2DDF9"),
         legend.position = "none")
 }
 
 # table theme
 options(reactable.theme = reactableTheme(
-  color = "#e8eaf6",
-  backgroundColor = "#303F9F",
+  color = "#D2DDF9",
+  backgroundColor = "#1643B6",
   borderColor = "#0c2461",
-  stripedColor = "#525DA9",
+  stripedColor = "#4976E9",
   highlightColor = "#0c2461",
   style = list(fontSize = "10px"),
-  searchInputStyle = list(width = "100%", backgroundColor = "#525DA9")
-  # inputStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
-  # selectStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
-  # pageButtonHoverStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
-  # pageButtonActiveStyle = list(backgroundColor = "hsl(233, 9%, 28%)")
+  searchInputStyle = list(
+    width = "100%", 
+    borderRadius = "0px",
+    backgroundColor = "#4976E9", 
+    fontColor = "#D2DDF9",
+    "::placeholder" = list(color = "#0c2461"))
 ))
 
 # color range for traces plot
-color_range <- colorRampPalette(c("#e8eaf6", "#E91E63", "#880E4F"), space = "Lab", interpolate = "linear")
+color_range <- colorRampPalette(c("#FCD3CF", "#F25041", "#8F150A"), space = "Lab", interpolate = "linear")
 
 # time formatting
 
 clean_hms <- function(attempt_real_time) {  round(seconds_to_period({{attempt_real_time}}), 2) }
 ```
 
-```{r getData}
+```{r getData, message=FALSE}
 all_splits <- read_csv("splits.csv")
 runs <- all_splits |> filter(total_attempts != 0)
 # not_run <- all_splits |> filter(total_attempts == 0)
 ```
+
+# Sidebar {.sidebar width="200px"}
+
+This dashboard shows an overview of my Mario Kart 8 Deluxe speedruns.
+
+<details>
+<summary>Show/Hide explanation of speedrunning, data, and graphs</summary>
+**Speedrunning** is trying to complete a game as fast as possible. Each speedrunning attempt is called a run. Each segment of a run is called a split (synonymous with “track” in Mario Kart). The most popular way to speedrun MK8DX is to play through all of the original 48 tracks, which takes about two hours on 150cc.
+
+The **Run Times** graph shows how my long each run has taken me to complete.
+
+The **Improvement from Slowest Run** graph shows this data with more detail. Each line is a completed run, comparing my cumulative run time for each track to that of my slowest run. The lowest colored line is my current personal best (PB), AKA the fastest time I’ve run the category.
+
+The orange dots show tracks where my PB run had a slower time than a previous run, indicating a **possible time save**; the size of the dot indicates how much time save is available. The grey line is my hypothetical best possible time, the cumulative sum of my best time for each track across all run attempts. Hover over any point/line for more detail.
+
+The **Segment Times** shows a distribution of how long it has taken me to complete each track. If my times have been consistent, the violin will be dark and short. If my times vary a lot, the violin will be lighter and longer. 
+</details>
 
 # 48 Tracks
 
@@ -145,18 +164,19 @@ line_48 <- complete_48_runs |>
   scale_y_time() +
   theme_minimal() +
   labs(x = "", y = "") +
-  theme(text = element_text(color = "#e8eaf6"),
-        axis.ticks = element_line(linewidth = .2, color = "#525DA9"),
-        axis.text.y = element_text(size = 8, color = "#e8eaf6"),
+  theme(text = element_text(color = "#D2DDF9"),
+        # axis.ticks = element_line(linewidth = .2, color = "#4976E9"),
+        axis.text.y = element_text(size = 8, color = "#D2DDF9"),
         axis.text.x = element_blank(),
         plot.background = element_rect(fill = NA),
         panel.background = element_rect(fill = NA),
-        panel.grid = element_line(linewidth = .2, color = "#525DA9"),
-        panel.border = element_rect(fill = NA, linewidth = .2, color = "#e8eaf6"))
+        panel.grid = element_line(linewidth = .2, color = "#4976E9")
+        # panel.border = element_rect(fill = NA, linewidth = .2, color = "#D2DDF9")
+        )
 
 line_48_p <- ggplotly(line_48, tooltip = "text") |> 
   layout(
-    margin = list(t = 0, r = 0, b = 0, l = 0, pad = 0)
+    margin = list(t = 0, r = 10, b = 0, l = 0, pad = 0)
     )
 config(line_48_p, displayModeBar = FALSE)
 ```
@@ -220,17 +240,22 @@ reactable(tbl_segment_48,
 
 ```{r}
 # value boxes
-v_complete_runs <- max(the_48$attempt_id)
+v_complete_runs <- the_48[which(!is.na(the_48$attempt_real_time)), "attempt_id"]
+v_complete_runs <- length(unique(v_complete_runs$attempt_id))
+v_attempt_runs <- the_48[which(is.na(the_48$attempt_real_time)), "attempt_id"]
+v_attempt_runs <- length(unique(v_attempt_runs$attempt_id))
+v_runs <- paste(v_attempt_runs, "/", v_complete_runs)
+
 v_run_PB <- seconds_to_period(round(min(the_48$attempt_real_time, na.rm = TRUE)))
 v_most_recent <- max(the_48$attempt_started, na.rm = TRUE) |> as_date()
 ```
 
 ```{r}
 #| content: valuebox
-#| title: "Runs Attempted"
+#| title: "Runs Completed / Attempted"
 list(
-  value = v_complete_runs,
-  color = "#303F9F"
+  value = v_runs,
+  color = "#1643B6"
 )
 ```
 
@@ -239,7 +264,7 @@ list(
 #| title: "Most Recent Run"
 list(
   value = v_most_recent,
-  color = "#525DA9"
+  color = "#4976E9"
 )
 ```
 
@@ -334,7 +359,7 @@ traces_48 <- ggplot() +
   geom_line(data = best_possible_time_48,
             aes(factor(segment_name), pb_run_diff, group = attempt_id, text = label), color = "gold", alpha = 0.7) +
   geom_point(data = test_48[which(test_48$time_save > 0), ], 
-             aes(factor(segment_name), worst_run_diff, size = time_save, colour = "tomato", text = label)) +
+             aes(factor(segment_name), worst_run_diff, size = time_save, colour = "#F25041", text = label)) +
   scale_y_time() +
   scale_color_identity() +
   scale_size_continuous(range = c(.05, 2.75)) +
@@ -343,18 +368,18 @@ traces_48 <- ggplot() +
        y = "") +
   theme_minimal() +
   theme(
-    text = element_text(color = "#e8eaf6"),
+    text = element_text(color = "#D2DDF9"),
     axis.text.x = element_text(
       angle = 45,
       hjust = 0.98,
       vjust = 0.9
     ),
-    axis.text = element_text(size = 8, color = "#e8eaf6"),
-    axis.ticks = element_line(size = .2),
+    axis.text = element_text(size = 8, color = "#D2DDF9"),
+    # axis.ticks = element_line(size = .2),
     plot.background = element_rect(fill = NA),
     panel.background = element_rect(fill = NA),
-    panel.grid = element_line(linewidth = .2, color = "#525DA9"),
-    panel.border = element_rect(fill = NA, linewidth = .2, color = "#e8eaf6"),
+    panel.grid = element_line(linewidth = .2, color = "#4976E9"),
+    # panel.border = element_rect(fill = NA, linewidth = .2, color = "#D2DDF9"),
     legend.position = "none"
   )
 
@@ -394,7 +419,7 @@ violin_48 <- complete_48 |> violin_style(segment_name, segment_real_time)
 
 violin_48_p <- ggplotly(violin_48, tooltip = "text") |> 
   layout(
-    margin = list(t = 0, r = 0, b = 0, l = 0, pad = 0)
+    margin = list(t = 0, r = 10, b = 0, l = 0, pad = 0)
     )
 config(violin_48_p, displayModeBar = FALSE)
 ```
