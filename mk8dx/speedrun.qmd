@@ -3,8 +3,6 @@ title: "MK8DX Speedruns"
 format: 
   dashboard:
     orientation: columns
-execute: 
-  freeze: auto
 ---
 
 ```{r libs, message=FALSE}

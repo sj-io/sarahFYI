@@ -1,6 +1,9 @@
 project:
   type: website
 
+execute: 
+  freeze: auto
+
 website:
   title: "sarah.fyi"
   search: false
@@ -18,6 +21,7 @@ website:
         href: mk8dx/index.qmd
         text: " "
         aria-label: "mario kart"
+    body-footer: <script data-goatcounter="https://sarahfyi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
 format:
   html:
