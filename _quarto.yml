@@ -7,6 +7,8 @@ execute:
 website:
   title: "sarah.fyi"
   search: false
+  site-url: https://sarah.fyi
+  repo-url: https://github.com/sj-io/sarahFYI
   navbar:
     title: false
     background: none

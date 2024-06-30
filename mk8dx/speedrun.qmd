@@ -421,39 +421,3 @@ violin_48_p <- ggplotly(violin_48, tooltip = "text") |>
     )
 config(violin_48_p, displayModeBar = FALSE)
 ```
-
-# Cups
-
-```{r}
-the_cups <- runs |> filter(str_ends(category, " Cups"))
-the_cups <- the_cups |> select(category, individual_cup, everything())
-the_cups <- the_cups |> left_join(tracks, by = c("segment_name" = "trk"))
-```
-
-```{r warning=FALSE, fig.height=8, fig.width=4.5, fig.dpi=300}
-#| title: "Time Distributions"
-complete_cups <- the_cups |> 
-  filter(!is.na(segment_name) & trk_ID <= 48) |> 
-  arrange(trk_ID) |> 
-  mutate(segment_name = 
-           if_else(!is.na(console), str_c(track, " [", console, "]"), track) |> fct_inorder()) |> 
-  mutate(
-    worst_segment_real_time = max(segment_real_time),
-    sd = sd(segment_real_time), 
-    attempts = n(),
-    label = paste0(
-    "<b>", segment_name, "</b>"
-  ),
-    .by = "segment_name")
-
-cups_violin <- complete_cups |> violin_style(segment_name, segment_real_time)
-
-ggplotly(cups_violin)
-```
-
-
-```{r}
-#| title: "Cup Table"
-reactable(complete_cups)
-```
-
