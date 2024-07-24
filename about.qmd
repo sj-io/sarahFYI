@@ -11,6 +11,9 @@ I built this site using [quarto](https://quarto.org/). you can view the source c
 #### social media
 
 - **twitch**: [sarahFYI](https://www.twitch.tv/sarahFYI)
+- **speedrun.com**: [sarahjohnson](https://www.speedrun.com/users/sarahjohnson)
+- **letterboxd**: [sj_io](https://letterboxd.com/sj_io/)
+- **lastfm**: [KillerSarah](https://www.last.fm/user/KillerSarah)
 - **tiktok**: *[fartata](https://www.tiktok.com/@farttata) (inactive)*
 - **vimeo**: *[sarahjohnson](https://vimeo.com/sarahjohnson) (inactive)*
 - **tumblr**: *[sarahjohnson](https://sarahjohnson.tumblr.com) (inactive)*
