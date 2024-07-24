@@ -2,4 +2,4 @@
 title: "mario kart"
 ---
 
-[speedruns](speedrun.qmd)
+[speedruns](speedruns/48-track.qmd)
