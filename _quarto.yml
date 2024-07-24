@@ -23,6 +23,9 @@ website:
         href: mk8dx/index.qmd
         text: " "
         aria-label: "mario kart"
+      - icon: image
+        href: screenies/index.qmd
+        text: " "
     body-footer: <script data-goatcounter="https://sarahfyi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
 format:

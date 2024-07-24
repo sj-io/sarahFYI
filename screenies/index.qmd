@@ -1,0 +1,25 @@
+---
+title: "haha"
+---
+
+```{r, echo=FALSE}
+plates <- list.files("../img/cars/plates", full.names = TRUE)
+stickers <- list.files("../img/cars/stickers", full.names = TRUE)
+
+make_image <- function(filepath) {
+  paste0('![](', filepath, ')')
+}
+
+make_plates <- purrr::map_vec(plates, make_image)
+make_stickers <- purrr::map_vec(stickers, make_image)
+```
+
+::: {layout-ncol=2}
+## License Plates
+
+`r eval(make_plates)`
+
+## Bumper Stickers
+
+`r eval(make_stickers)`
+:::
