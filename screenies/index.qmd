@@ -7,7 +7,7 @@ plates <- list.files("../img/cars/plates", full.names = TRUE)
 stickers <- list.files("../img/cars/stickers", full.names = TRUE)
 
 make_image <- function(filepath) {
-  paste0('![](', filepath, ')')
+  paste0('![](', filepath, '){width=100%}')
 }
 
 make_plates <- purrr::map_vec(plates, make_image)
