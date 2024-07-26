@@ -1,25 +1,55 @@
 ---
 title: "haha"
+execute: 
+  echo: false
+  warning: false
 ---
 
+```{r}
+library(tidyverse)
+```
+
+
 ```{r, echo=FALSE}
-plates <- list.files("../img/cars/plates", full.names = TRUE)
-stickers <- list.files("../img/cars/stickers", full.names = TRUE)
+plates <- list.files(file.path("..", "img", "cars", "plates"), full.names = TRUE)
+stickers <- list.files(file.path("..", "img", "cars", "stickers"), full.names = TRUE)
+
+nsfw_plates <- str_subset(plates, "nsfw-")
+nsfw_stickers <- str_subset(stickers, "nsfw-")
+
+plates <- plates[!(plates %in% nsfw_plates)]
+stickers <- stickers[!(stickers %in% nsfw_stickers)]
 
 make_image <- function(filepath) {
   paste0('![](', filepath, '){width=100%}')
 }
 
-make_plates <- purrr::map_vec(plates, make_image)
-make_stickers <- purrr::map_vec(stickers, make_image)
+make_plates <- map_vec(plates, make_image)
+make_nsfw_plates <- map_vec(nsfw_plates, make_image)
+make_stickers <- map_vec(stickers, make_image)
+make_nsfw_stickers <- map_vec(nsfw_stickers, make_image)
 ```
 
 ::: {layout-ncol=2}
-## License Plates
+
+::: {#first-column}
+## license plates
 
 `r eval(make_plates)`
 
-## Bumper Stickers
+<details>
+<summary>nsfw plates</summary>
+`r eval(make_nsfw_plates)`
+</details>
+:::
 
+::: {#second-column}
+## bumper stickers
 `r eval(make_stickers)`
+
+<details>
+<summary>nsfw stickers</summary>
+`r eval(make_nsfw_stickers)`
+</details>
+:::
 :::
