@@ -1,0 +1,13 @@
+---
+title: "gaming stuff"
+---
+
+# mario kart 8 deluxe
+
+[speedruns](mk8dx/speedruns/48-track.qmd)
+
+[mk8dx speedrun R package](https://github.com/sj-io/mk8dx)
+
+# pikmin bloom
+
+[pikmin bloom](pikmin/index.qmd) 🚧

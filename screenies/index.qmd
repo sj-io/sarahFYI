@@ -1,8 +1,5 @@
 ---
 title: "haha"
-execute: 
-  echo: false
-  warning: false
 ---
 
 ```{r}

@@ -1,5 +1,0 @@
----
-title: "mario kart"
----
-
-[speedruns](speedruns/48-track.qmd)

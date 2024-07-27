@@ -1,0 +1,17 @@
+{
+  "hash": "d2084aee571556ae845c1d2aea403adf",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Pikmin Bloom\"\nlightbox: true\n---\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\n\n::: {layout-nrow=2}\n\n::: {#col1}\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n\n\n:::\n\n::: {#col2}\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n\n\n\n:::\n:::\n\n::: {.column-margin}\n\nPikmin Bloom is a mobile game where you plant flowers in the game when you go on a walk irl. Along the way, you'll collect fruits and seedlings. The seedlings turn into pikmin, who battle mushrooms and accompany you on walks to plant more flowers.\n\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

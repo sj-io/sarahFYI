@@ -1,0 +1,134 @@
+---
+title: "Pikmin Bloom"
+lightbox: true
+---
+
+```{r}
+library(tidyverse)
+library(ggimage)
+```
+
+```{r}
+pikmin <- read_csv("pikmin.csv") |> janitor::clean_names()
+pikmin <- pikmin |> mutate(
+  image_link = file.path(
+      "..", "..", "img", "pikmin", paste0("pikmin-", color, ".png")
+      )
+)
+pikmin_colors <- c(
+    "blue" = "#5F90D0",
+    "grey" = "#596270",
+    "pink" = "#EA9ACB",
+    "purple" = "#7D4782",
+    "red" = "#D65E47",
+    "white" = "#ECEBEB",
+    "yellow" = "#FBF07F"
+  )
+pikmin_theme <- theme(
+  legend.position = "none",
+  plot.background = element_rect(fill = "#B2D563", colour = NA),
+  plot.title = element_text(size = 25, hjust = 0, colour = "#F6F9FA", face = "bold"),
+  plot.subtitle = element_text(size = 10, hjust = 0, colour = "#596270", face = "bold"),
+  plot.margin = margin(25,20,15,20, "pt"),
+  plot.caption = element_text(face = "bold", size = 10, colour = "#596270")
+)
+
+pikmin_color_data <- pikmin |> 
+  count(color, image_link) |> 
+  mutate(
+    text_color = if_else(
+      color %in% c("white", "yellow", "pink"), "#596270", "#F6F9FA"
+      )) 
+
+pikmin_date <- min(mdy(pikmin$date_found))
+pikmax_date <- max(mdy(pikmin$date_found))
+pikmin_date_range <- paste0(pikmin_date, " to ", pikmax_date)
+pikmin_y_max <- max(pikmin_color_data$n) + 5
+
+pikmin_bdays <- pikmin |> 
+  count(date_found, color, image_link) |> 
+  mutate(
+    daily_sum = sum(n), 
+    daily_pct = n/daily_sum,
+    .by = date_found
+    ) |> 
+  arrange(date_found, n)
+
+pikmin_bday_y_max <- max(pikmin_bdays$n) + 3
+```
+
+::: {layout-nrow=2}
+
+::: {#col1}
+
+```{r}
+pikmin_color_data |> 
+  ggplot() +
+  geom_col(aes(x = color, y = n, fill = color)) +
+  geom_text(aes(x = color, y = n - 1.5, label = n), 
+            color = pikmin_color_data$text_color, 
+            size = 5.5, fontface = "bold") +
+  geom_text(aes(x = color, y = -1, label = color, fontface = "bold"), 
+            color = pikmin_colors 
+            ) +
+  geom_image(aes(x = color, y = n + 3, image = image_link), size = .23, by = "height") +
+  scale_fill_manual(values = pikmin_colors) +
+  scale_y_continuous(limits = c(NA, pikmin_y_max)) +
+  theme_void() +
+  labs(title = "Pikmin Color Count",
+       subtitle = pikmin_date_range,
+       caption = "sarah.fyi") +
+  pikmin_theme
+
+# ggsave("pikmin-color-count.png", width = 7, height = 5)
+```
+
+:::
+
+::: {#col2}
+
+```{r}
+ggplot(data = pikmin_bdays, aes(x = date_found)) +
+  geom_text(
+    # data = pikmin_bdays,
+    aes(y = 1, label = daily_sum),
+    size = 10, fontface = "bold", color = "#549650") +
+  # geom_image(
+  #   # data = pikmin_bdays,
+  #   aes(x = date_found, y = n, image = image_link, size = I(daily_pct*.3),
+  #       group = color),
+  #   position = position_fill(vjust = 0.5)
+  # ) +
+  # scale_y_continuous(limits = c(-.2, 1.2)) +
+  geom_dotplot(
+    data = pikmin,
+    aes(x = date_found, fill = factor(color)),
+    dotsize = .1,
+    stroke = NA,
+    binwidth = 1,
+    stackgroups = TRUE,
+    binpositions = "all",
+    position = position_jitter(height = .1)
+  ) +
+  # aesthetics
+  scale_fill_manual(values = pikmin_colors) +
+  theme_void() +
+  theme(
+    axis.text.x = element_text(
+      size = 10, colour = "#596270", face = "bold", margin = margin(b=10)
+    )
+  ) +
+  labs(title = "Pikmin Discovery Days", caption = "sarah.fyi") +
+  pikmin_theme
+
+# ggsave("pikmin-bday-count.png", width = 7, height = 5)
+```
+
+:::
+:::
+
+::: {.column-margin}
+
+Pikmin Bloom is a mobile game where you plant flowers in the game when you go on a walk irl. Along the way, you'll collect fruits and seedlings. The seedlings turn into pikmin, who battle mushrooms and accompany you on walks to plant more flowers.
+
+:::

@@ -3,6 +3,8 @@ project:
 
 execute: 
   freeze: auto
+  echo: false
+  warning: false
 
 website:
   title: "sarah.fyi"
@@ -19,14 +21,14 @@ website:
       - href: about.qmd
         icon: person-arms-up
         text: " "
-      - icon: car-front-fill
-        href: mk8dx/index.qmd
+      - icon: controller
+        href: gaming/index.qmd
         text: " "
-        aria-label: "mario kart"
+        aria-label: "gaming"
       - icon: image
         href: screenies/index.qmd
         text: " "
-    body-footer: <script data-goatcounter="https://sarahfyi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  body-footer: <script data-goatcounter="https://sarahfyi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
 format:
   html:
