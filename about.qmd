@@ -2,7 +2,15 @@
 title: "about"
 ---
 
-hey, I'm **sarah**, a 29-year-old from memphis.
+```{r}
+library(lubridate)
+bday <- Sys.getenv("MY_BDAY") |> as_date()
+age <- interval(bday, now()) / years(1)
+age <- floor(age)
+```
+
+
+hey, I'm **sarah**, a `r {age}`-year-old from Memphis (no longer in Memphis)
 
 [here's a playlist of some of my favorite songs.](https://open.spotify.com/playlist/2m9yQdlbkVmfCSiSJ5vaDb)
 
@@ -13,7 +21,7 @@ I built this site using [quarto](https://quarto.org/). you can view the source c
 - **twitch**: [sarahFYI](https://www.twitch.tv/sarahFYI)
 - **speedrun.com**: [sarahjohnson](https://www.speedrun.com/users/sarahjohnson)
 - **letterboxd**: [sj_io](https://letterboxd.com/sj_io/)
-- **lastfm**: [KillerSarah](https://www.last.fm/user/KillerSarah)
+- **lastfm**: *[KillerSarah](https://www.last.fm/user/KillerSarah) (inactive)*
 - **tiktok**: *[fartata](https://www.tiktok.com/@farttata) (inactive)*
 - **vimeo**: *[sarahjohnson](https://vimeo.com/sarahjohnson) (inactive)*
 - **tumblr**: *[sarahjohnson](https://sarahjohnson.tumblr.com) (inactive)*

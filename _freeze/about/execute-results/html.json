@@ -1,0 +1,15 @@
+{
+  "hash": "79e79e1e35da958165c80bba55aef433",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"about\"\n---\n\n\n::: {.cell}\n\n:::\n\n\n\nhey, I'm **sarah**, a 30-year-old from Memphis (no longer in Memphis)\n\n[here's a playlist of some of my favorite songs.](https://open.spotify.com/playlist/2m9yQdlbkVmfCSiSJ5vaDb)\n\nI built this site using [quarto](https://quarto.org/). you can view the source code [on github](https://github.com/sj-io/sarahFYI).\n\n#### social media\n\n- **twitch**: [sarahFYI](https://www.twitch.tv/sarahFYI)\n- **speedrun.com**: [sarahjohnson](https://www.speedrun.com/users/sarahjohnson)\n- **letterboxd**: [sj_io](https://letterboxd.com/sj_io/)\n- **lastfm**: *[KillerSarah](https://www.last.fm/user/KillerSarah) (inactive)*\n- **tiktok**: *[fartata](https://www.tiktok.com/@farttata) (inactive)*\n- **vimeo**: *[sarahjohnson](https://vimeo.com/sarahjohnson) (inactive)*\n- **tumblr**: *[sarahjohnson](https://sarahjohnson.tumblr.com) (inactive)*\n- no **twitter**, **instagram**, **facebook**, or **snapchat**",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
