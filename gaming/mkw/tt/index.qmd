@@ -106,6 +106,6 @@ gg_wr <- ggplot() +
     y = ""
   )
 
-ggplotly(gg_wr, tooltip = "text")
+ggplotly(gg_wr, tooltip = "text") |> config(displayModeBar = FALSE)
 ```
 
