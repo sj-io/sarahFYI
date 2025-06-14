@@ -1,0 +1,62 @@
+---
+title: "time trials"
+format: html
+---
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(lubridate)
+
+raw_fp <- Sys.getenv("MKW_TT_FILE")
+
+raw_tt <- readr::read_csv(raw_fp, col_types = list(.default = "character")) |> 
+  janitor::remove_empty("rows")
+
+fill_tt <- colnames(raw_tt) |> str_subset("time", negate = TRUE)
+
+tt <- raw_tt |> 
+  fill(all_of(fill_tt)) |>
+  mutate(outfit = str_glue("({outfit})")) |> 
+  unite(date, c("date", "time"), sep = " ") |>
+  unite(character, c("character", "outfit"), sep = " ") |>
+  rename(time = race_time) |> 
+  mutate(date = ymd_hm(date, tz = "America/New_York"),
+         time = ms(time))
+```
+
+```{r}
+library(rvest)
+
+raw_wr <- read_html("https://www.mkwrs.com/mkworld/") |> 
+  html_elements(".wr") |> 
+  html_table() |> 
+  purrr::pluck(1)
+
+wr <- raw_wr |> 
+  janitor::clean_names() |> 
+  select(track, time = time_video, player, date, character, kart = vehicle) |> 
+  filter(track != "Total:") |> 
+  mutate(
+    across(where(is.character), str_to_lower),
+    time = str_replace_all(time, c("'" = ":", "\"" = ".")) |> ms(),
+         track = str_remove_all(track, "['\\.\\?]") |> 
+           str_replace_all("-", " ") |> 
+           str_squish())
+```
+
+```{r}
+best_tt <- tt |> 
+  slice_min(time, n = 1, by = "track") |> 
+  left_join(wr, by = "track", suffix = c("_pr", "_wr")) |> 
+  mutate(diff = seconds_to_period(period_to_seconds(time_pr) - period_to_seconds(time_wr)) |> round(3),
+         date_pr = as_date(date_pr)) |> 
+  select(track, starts_with("date"), starts_with("time"), diff) |> 
+  arrange(diff)
+```
+
+```{r}
+knitr::kable(best_tt)
+```
+

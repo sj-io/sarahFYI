@@ -2,6 +2,10 @@
 title: "gaming stuff"
 ---
 
+# mario kart world
+
+[mkw time trials](mkw/tt)
+
 # mario kart 8 deluxe
 
 [speedruns](mk8dx/speedruns/48-track.qmd)
