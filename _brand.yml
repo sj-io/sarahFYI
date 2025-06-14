@@ -1,0 +1,58 @@
+color: 
+  palette: 
+    blue: "#0c2461"
+    white: "#D2DDF9"
+    light-blue: "#A4BBF4"
+  background: blue
+  foreground: white
+  primary: light-blue
+  secondary: white
+  
+defaults: 
+  quarto: 
+    rules: |
+      content > * {
+        padding-top: 0 !important;
+      }
+  bootstrap:
+    rules: |
+      body {
+        background-image: url("img/twinkle-star.gif");
+      }
+      
+      .navbar {
+        backdrop-filter: blur(8px);
+        border-bottom: none !important;
+        li a {
+          display: block;
+          margin-right: 2.5rem;
+          font-size: 2.5em;
+          color: $blue-100;
+        }
+        li a:hover {
+          color: $blue-300;
+          transform: rotate(360deg);
+          transition: transform 2s;
+          transition-timing-function: ease-in-out;
+        }
+      }
+      
+      main {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+      }
+      
+      .content {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        background-image: url("img/full-moon.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        text-shadow: 0px 0px 20px $blue, 0 0 5px black;
+      }
+    
+      

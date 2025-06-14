@@ -30,12 +30,12 @@ website:
         text: " "
   body-footer: <script data-goatcounter="https://sarahfyi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
-format:
-  html:
-    theme: custom.scss
-    css: styles.css
-    toc: false
-    page-layout: full
+#format:
+ # html:
+    # theme: custom.scss
+    # css: styles.css
+  #  toc: false
+   # page-layout: full
 
 
 
