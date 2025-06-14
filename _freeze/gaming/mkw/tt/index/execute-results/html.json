@@ -1,0 +1,15 @@
+{
+  "hash": "8da840e2cd06c20a9f373ed95df09907",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"time trials\"\nformat: html\n---\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n\n\n|track              |date_pr    |date_wr    |    time_pr|    time_wr|    diff|\n|:------------------|:----------|:----------|----------:|----------:|-------:|\n|shy guy bazaar     |2025-06-12 |2025-06-09 |  2M 3.566S| 1M 54.342S|  9.224S|\n|mario bros circuit |2025-06-14 |2025-06-11 |  2M 2.606S| 1M 52.837S|  9.769S|\n|dk spaceport       |2025-06-13 |2025-06-13 | 1M 41.925S| 1M 32.053S|  9.872S|\n|mario circuit      |2025-06-13 |2025-06-11 | 1M 15.329S|  1M 4.725S| 10.604S|\n|acorn heights      |2025-06-13 |2025-06-12 | 2M 12.945S|  1M 59.89S| 13.055S|\n|peach stadium      |2025-06-12 |2025-06-12 | 2M 32.189S| 2M 18.209S|  13.98S|\n|moo moo meadows    |2025-06-13 |2025-06-13 | 2M 13.163S| 1M 58.978S| 14.185S|\n|crown city         |2025-06-12 |2025-06-10 | 2M 23.507S|  2M 9.252S| 14.255S|\n\n\n:::\n:::\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
