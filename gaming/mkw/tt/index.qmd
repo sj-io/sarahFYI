@@ -11,6 +11,14 @@ library(lubridate)
 
 raw_fp <- Sys.getenv("MKW_TT_FILE")
 
+add_label <- function(track, date, time, character, kart, player = NULL) {
+  l <- str_glue("<b>track:</b> {track}<br><b>date:</b> {date}<br><b>time:</b> {time}<br><b>character:</b> {character}<br><b>kart:</b> {kart}")
+  if (!is.null(player)) {
+    l <- str_glue("{l}<br><b>player:</b> {player}")
+  }
+  l
+}
+
 raw_tt <- readr::read_csv(raw_fp, col_types = list(.default = "character")) |> 
   janitor::remove_empty("rows")
 
@@ -23,7 +31,9 @@ tt <- raw_tt |>
   unite(character, c("character", "outfit"), sep = " ") |>
   rename(time = race_time) |> 
   mutate(date = ymd_hm(date, tz = "America/New_York"),
-         time = ms(time))
+         time = ms(time),
+         label = add_label(track, date, time, character, kart))
+
 ```
 
 ```{r}
@@ -41,22 +51,61 @@ wr <- raw_wr |>
   mutate(
     across(where(is.character), str_to_lower),
     time = str_replace_all(time, c("'" = ":", "\"" = ".")) |> ms(),
-         track = str_remove_all(track, "['\\.\\?]") |> 
-           str_replace_all("-", " ") |> 
-           str_squish())
+    track = str_remove_all(track, "['\\.\\?]") |> str_replace_all("-", " ") |> str_squish(),
+    label = add_label(track, date, time, character, kart, player))
 ```
 
 ```{r}
-best_tt <- tt |> 
-  slice_min(time, n = 1, by = "track") |> 
+all_tt <- tt |> 
   left_join(wr, by = "track", suffix = c("_pr", "_wr")) |> 
   mutate(diff = seconds_to_period(period_to_seconds(time_pr) - period_to_seconds(time_wr)) |> round(3),
          date_pr = as_date(date_pr)) |> 
-  select(track, starts_with("date"), starts_with("time"), diff) |> 
   arrange(diff)
+
+best_tt <- all_tt |> 
+  slice_min(time_pr, n = 1, by = "track")
 ```
 
 ```{r}
-knitr::kable(best_tt)
+knitr::kable(best_tt |> select(track, starts_with("date"), starts_with("time"), diff))
+```
+
+```{r}
+library(ggplot2)
+library(emojifont)
+library(plotly)
+
+all_tt_sec <- all_tt |> 
+  mutate(across(starts_with("time"), ~ period_to_seconds(.))) |> 
+  mutate(sd = sd(time_pr), .by = "track")
+best_tt_sec <- best_tt |> 
+  mutate(across(starts_with("time"), ~ period_to_seconds(.)))
+
+gg_wr <- ggplot() +
+  geom_point(data = all_tt_sec |> anti_join(best_tt_sec), aes(x = track, y = time_pr, text = label_pr), color = "grey40") +
+  geom_point(data = best_tt_sec, aes(x = track, y = time_pr, text = label_pr), color = "gold") +
+  # geom_violin(
+  #   data = all_tt_sec, 
+  #   aes(x = track, y = time_pr, fill = sd, colour = sd), 
+  #   draw_quantiles = 0.5, scale = "width", alpha = 0.7) +
+  geom_text(
+    data = all_tt_sec, 
+    aes(x = track, y = time_wr, text = label_wr), 
+    label = emoji("trophy"), family = "EmojiOne", size = 3) +
+  scale_y_time() +
+  theme_minimal() +
+  theme(
+    axis.text = element_text(color = "white"),
+    axis.text.x = element_text(angle = 45, hjust = 0.98, vjust = .9),
+    plot.background = element_rect(fill = NA),
+    panel.background = element_rect(fill = NA),
+    panel.grid = element_line(linewidth = 0.2, color = "grey40")
+  ) +
+  labs(
+    x = "",
+    y = ""
+  )
+
+ggplotly(gg_wr, tooltip = "text")
 ```
 
