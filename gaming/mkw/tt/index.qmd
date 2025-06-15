@@ -53,8 +53,12 @@ wr <- raw_wr |>
   mutate(
     across(where(is.character), str_to_lower),
     time = str_replace_all(time, c("'" = ":", "\"" = ".")) |> ms(),
-    track = str_remove_all(track, "['\\.\\?]") |> str_replace_all("-", " ") |> str_squish(),
-    label = add_label(track, date, time, character, kart, player))
+    track = str_remove_all(track, "['\\.\\?]") |> str_replace_all("-", " ") |> str_squish()
+  ) |> 
+  slice_min(time, by = "track") |> 
+  mutate(
+    label = add_label(track, date, time, character, kart, player)
+    )
 ```
 
 ```{r}
@@ -101,6 +105,7 @@ pb_tbl <- best_tt |>
   mutate(across(starts_with("time"), as.character))
 reactable(pb_tbl,
   striped = TRUE, highlight = TRUE, wrap = FALSE,
+  pagination = FALSE,
   defaultSortOrder = "desc", defaultSorted = "diff", compact = TRUE,
   )
 ```
