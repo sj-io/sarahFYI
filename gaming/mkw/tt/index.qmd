@@ -1,6 +1,8 @@
 ---
 title: "time trials"
-format: html
+format: 
+  dashboard:
+    orientation: columns
 ---
 
 ```{r}
@@ -66,11 +68,18 @@ best_tt <- all_tt |>
   slice_min(time_pr, n = 1, by = "track")
 ```
 
+## col 1 {width="45%"}
+
+::: {.card title="personal bests"}
 ```{r}
 knitr::kable(best_tt |> select(track, starts_with("date"), starts_with("time"), diff))
 ```
+:::
+
+## col 2
 
 ```{r}
+#| title: WR comparison
 library(ggplot2)
 library(emojifont)
 library(plotly)
