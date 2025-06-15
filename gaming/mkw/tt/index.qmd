@@ -66,17 +66,53 @@ all_tt <- tt |>
 
 best_tt <- all_tt |> 
   slice_min(time_pr, n = 1, by = "track")
+
+not_run <- wr |> anti_join(tt |> select(track), by = "track")
 ```
 
-## col 1 {width="45%"}
+## col 1
 
 ::: {.card title="personal bests"}
 ```{r}
-knitr::kable(best_tt |> select(track, starts_with("date"), starts_with("time"), diff))
+library(reactable)
+
+options(reactable.theme = reactableTheme(
+  color = "#D2DDF9",
+  backgroundColor = "#0c2461",
+  borderColor = "#0c2461",
+  stripedColor = "#113388",
+  highlightColor = "darkgoldenrod",
+  style = list(fontSize = "11px"),
+  searchInputStyle = list(
+    width = "100%", 
+    borderRadius = "0px",
+    backgroundColor = "#4976E9", 
+    fontColor = "#D2DDF9",
+    "::placeholder" = list(color = "#0c2461"))
+))
+
+pb_tbl <- best_tt |> 
+  select(track, starts_with("date"), starts_with("time"), diff) |> 
+  mutate(across(starts_with("time"), as.character))
+reactable(pb_tbl,
+  striped = TRUE, highlight = TRUE, wrap = FALSE,
+  defaultSortOrder = "desc", defaultSorted = "diff", compact = TRUE,
+  )
 ```
 :::
 
-## col 2
+::: {.card title="no recorded times"}
+```{r}
+reactable(not_run |> select(-label),
+  striped = TRUE, highlight = TRUE, wrap = FALSE,
+  defaultSortOrder = "desc", compact = TRUE,
+  pagination = FALSE
+  )
+```
+
+:::
+
+## col 2 {width="45%"}
 
 ```{r}
 #| title: WR comparison
@@ -91,21 +127,26 @@ best_tt_sec <- best_tt |>
   mutate(across(starts_with("time"), ~ period_to_seconds(.)))
 
 gg_wr <- ggplot() +
-  geom_point(data = all_tt_sec |> anti_join(best_tt_sec), aes(x = track, y = time_pr, text = label_pr), color = "grey40") +
-  geom_point(data = best_tt_sec, aes(x = track, y = time_pr, text = label_pr), color = "gold") +
+  geom_point(
+    data = all_tt_sec |> anti_join(best_tt_sec), 
+    aes(y = track, x = time_pr, text = label_pr), 
+    color = "grey40", position = position_jitter()) +
+  geom_point(data = best_tt_sec, aes(y = track, x = time_pr, text = label_pr), color = "gold") +
   # geom_violin(
   #   data = all_tt_sec, 
   #   aes(x = track, y = time_pr, fill = sd, colour = sd), 
   #   draw_quantiles = 0.5, scale = "width", alpha = 0.7) +
   geom_text(
     data = all_tt_sec, 
-    aes(x = track, y = time_wr, text = label_wr), 
+    # aes(x = track, y = time_wr, text = label_wr), 
+    aes(y = track, x = time_wr, text = label_wr), 
     label = emoji("trophy"), family = "EmojiOne", size = 3) +
-  scale_y_time() +
+  # scale_y_time() +
+  scale_x_time() +
   theme_minimal() +
   theme(
     axis.text = element_text(color = "white"),
-    axis.text.x = element_text(angle = 45, hjust = 0.98, vjust = .9),
+    # axis.text.x = element_text(angle = 45, hjust = 0.98, vjust = .9),
     plot.background = element_rect(fill = NA),
     panel.background = element_rect(fill = NA),
     panel.grid = element_line(linewidth = 0.2, color = "grey40")
@@ -118,3 +159,19 @@ gg_wr <- ggplot() +
 ggplotly(gg_wr, tooltip = "text") |> config(displayModeBar = FALSE)
 ```
 
+## col 3 {width="20%"}
+
+::: {.card title="most popular wr combos"}
+```{r}
+most_popular_combo <- wr |> mutate(character = str_remove(character, " \\(.*\\)$")) |> count(character, kart) |> arrange(desc(n))
+
+# most_popular_combo |> knitr::kable()
+
+reactable(most_popular_combo,
+  striped = TRUE, highlight = TRUE, wrap = FALSE,
+  compact = TRUE,
+  pagination = FALSE,
+  # paginationType = "simple", defaultPageSize = 20,
+  )
+```
+:::
