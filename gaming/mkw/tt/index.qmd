@@ -68,6 +68,11 @@ best_tt <- all_tt |>
   slice_min(time_pr, n = 1, by = "track")
 
 not_run <- wr |> anti_join(tt |> select(track), by = "track")
+
+most_recent <- tt |> 
+  slice_min(time, by = "track") |> 
+  slice_max(order_by = date)
+  # pull(date)
 ```
 
 ## col 1
@@ -103,7 +108,7 @@ reactable(pb_tbl,
 
 ::: {.card title="no recorded times"}
 ```{r}
-reactable(not_run |> select(-label),
+reactable(not_run |> select(-label) |> mutate(time = as.character(time)),
   striped = TRUE, highlight = TRUE, wrap = FALSE,
   defaultSortOrder = "desc", compact = TRUE,
   pagination = FALSE
