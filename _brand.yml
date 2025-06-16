@@ -15,6 +15,10 @@ defaults:
         padding-top: 0 !important;
       }
   bootstrap:
+    defaults: 
+      nav-tabs-link-active-color: "#D2DDF9"
+      nav-tabs-link-active-border-color: "#D2DDF9 #D2DDF9 #D2DDF9"
+      nav-tabs-link-hover-border-color: "#1643B6 #1643B6 #1643B6"
     rules: |
       body {
         background-image: url("img/twinkle-star.gif");
@@ -54,5 +58,17 @@ defaults:
         background-position: center;
         text-shadow: 0px 0px 20px $blue, 0 0 5px black;
       }
-    
+      
+      .card-header {
+        background-color: $blue-600;
+      }
+      
+      .bslib-full-screen-enter {
+        background-color: $white;
+      }
+      
+      .dashboard-tbl-header {
+        color: $blue-300;
+        border-bottom: 2px solid $blue-300 !important;
+      }
       

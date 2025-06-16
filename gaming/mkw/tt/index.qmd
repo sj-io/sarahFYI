@@ -10,6 +10,11 @@ library(tidyr)
 library(dplyr)
 library(stringr)
 library(lubridate)
+library(ggplot2)
+library(reactable)
+library(htmltools)
+library(emojifont)
+library(plotly)
 
 raw_fp <- Sys.getenv("MKW_TT_FILE")
 
@@ -21,6 +26,24 @@ add_label <- function(track, date, time, character, kart, player = NULL) {
   l
 }
 
+options(
+  reactable.theme = reactableTheme(
+    color = "#D2DDF9",
+    backgroundColor = "#0c2461",
+    borderColor = "#0c2461",
+    stripedColor = "#113388",
+    highlightColor = "darkgoldenrod",
+    style = list(fontSize = "11px"),
+    searchInputStyle = list(
+      width = "100%", 
+      borderRadius = "0px",
+      backgroundColor = "#4976E9", 
+      fontColor = "#D2DDF9",
+      "::placeholder" = list(color = "#0c2461"))
+  ))
+```
+
+```{r}
 raw_tt <- readr::read_csv(raw_fp, col_types = list(.default = "character")) |> 
   janitor::remove_empty("rows")
 
@@ -71,65 +94,103 @@ all_tt <- tt |>
 best_tt <- all_tt |> 
   slice_min(time_pr, n = 1, by = "track")
 
-not_run <- wr |> anti_join(tt |> select(track), by = "track")
-
 most_recent <- tt |> 
   slice_min(time, by = "track") |> 
   slice_max(order_by = date)
-  # pull(date)
 ```
 
 ## col 1
 
+### row 1 {.tabset}
+
 ::: {.card title="personal bests"}
-```{r}
-library(reactable)
 
-options(reactable.theme = reactableTheme(
-  color = "#D2DDF9",
-  backgroundColor = "#0c2461",
-  borderColor = "#0c2461",
-  stripedColor = "#113388",
-  highlightColor = "darkgoldenrod",
-  style = list(fontSize = "11px"),
-  searchInputStyle = list(
-    width = "100%", 
-    borderRadius = "0px",
-    backgroundColor = "#4976E9", 
-    fontColor = "#D2DDF9",
-    "::placeholder" = list(color = "#0c2461"))
-))
-
+```{r tblPB}
 pb_tbl <- best_tt |> 
   select(track, starts_with("date"), starts_with("time"), diff) |> 
   mutate(across(starts_with("time"), as.character))
+
 reactable(pb_tbl,
   striped = TRUE, highlight = TRUE, wrap = FALSE,
-  pagination = FALSE,
-  defaultSortOrder = "desc", defaultSorted = "diff", compact = TRUE,
-  )
+  pagination = FALSE, compact = TRUE, resizable = TRUE,
+  defaultSortOrder = "desc", defaultSorted = "diff",
+  defaultColDef = colDef(align = "center", 
+                         headerClass = "dashboard-tbl-header"
+                         # headerStyle = list(borderBottom = "2px solid darkgoldenrod")
+                         ),
+  columns = list(
+    track = colDef(name = "track", minWidth = 130, align = "left"),
+    date_pr = colDef(name = "date", maxWidth = 80),
+    time_pr = colDef(name = "time", maxWidth = 80),
+    date_wr = colDef(name = "date", maxWidth = 80),
+    time_wr = colDef(name = "time", maxWidth = 80),
+    diff = colDef(name = "difference", minWidth = 60)
+  ),
+  columnGroups = list(
+    colGroup(name = "personal record", 
+             columns = c("date_pr", "time_pr"),
+             headerClass = "dashboard-tbl-header"),
+    colGroup(name = "world record", 
+             columns = c("date_wr", "time_wr"),
+             headerClass = "dashboard-tbl-header")
+  ))
 ```
 :::
 
 ::: {.card title="no recorded times"}
 ```{r}
-reactable(not_run |> select(-label) |> mutate(time = as.character(time)),
+not_run <- wr |> anti_join(tt |> select(track), by = "track")
+not_run <- not_run |> 
+  select(track, player, date, time, character, kart) |> 
+  mutate(time = as.character(time))
+
+reactable(not_run,
   striped = TRUE, highlight = TRUE, wrap = FALSE,
   defaultSortOrder = "desc", compact = TRUE,
-  pagination = FALSE
+  pagination = FALSE, resizable = TRUE,
+  defaultColDef = colDef(align = "center", headerClass = "dashboard-tbl-header"),
+  columns = list(
+    track = colDef(minWidth = 130, align = "left"),
+    date = colDef(maxWidth = 80),
+    time = colDef(maxWidth = 80),
+    player = colDef(maxWidth = 80)
+  ))
+```
+:::
+
+### row 2
+
+```{r}
+#| title: "Recorded Races"
+daily_tt <- tt |> 
+  mutate(date = as_date(date)) |> 
+  count(date)
+
+gg_tt_count <- daily_tt |> 
+  ggplot() +
+  geom_line(aes(x = date, y = n), color = "darkgoldenrod") +
+  geom_point(aes(x = date, y = n), color = "darkgoldenrod") +
+  theme_minimal() +
+  theme(
+    text = element_text(color = "#D2DDF9"),
+    axis.text = element_text(color = "#D2DDF9"),
+    plot.background = element_rect(fill = NA),
+    panel.background = element_rect(fill = NA),
+    panel.grid = element_line(linewidth = .2, color = "#4976E9"),
+  ) +
+  labs(
+    x = "",
+    y = "# of recorded time trials"
   )
+
+ggplotly(gg_tt_count)
 ```
 
-:::
 
 ## col 2 {width="45%"}
 
 ```{r}
 #| title: WR comparison
-library(ggplot2)
-library(emojifont)
-library(plotly)
-
 all_tt_sec <- all_tt |> 
   mutate(across(starts_with("time"), ~ period_to_seconds(.))) |> 
   mutate(sd = sd(time_pr), .by = "track")
@@ -148,18 +209,15 @@ gg_wr <- ggplot() +
   #   draw_quantiles = 0.5, scale = "width", alpha = 0.7) +
   geom_text(
     data = all_tt_sec, 
-    # aes(x = track, y = time_wr, text = label_wr), 
     aes(y = track, x = time_wr, text = label_wr), 
-    label = emoji("trophy"), family = "EmojiOne", size = 3) +
-  # scale_y_time() +
+    label = emoji("trophy"), family = "EmojiOne", size = 4) +
   scale_x_time() +
   theme_minimal() +
   theme(
     axis.text = element_text(color = "white"),
-    # axis.text.x = element_text(angle = 45, hjust = 0.98, vjust = .9),
     plot.background = element_rect(fill = NA),
     panel.background = element_rect(fill = NA),
-    panel.grid = element_line(linewidth = 0.2, color = "grey40")
+    panel.grid = element_line(linewidth = .2, color = "#4976E9"),
   ) +
   labs(
     x = "",
@@ -170,18 +228,32 @@ ggplotly(gg_wr, tooltip = "text") |> config(displayModeBar = FALSE)
 ```
 
 ## col 3 {width="20%"}
+```{r}
+#| content: valuebox
+#| title: "most recent track"
+list(
+  # icon = "trash",
+  color = "#0E1C4B",
+  value = most_recent$track
+)
+```
 
-::: {.card title="most popular wr combos"}
+```{r}
+#| content: valuebox
+#| title: "most recent attempt"
+list(
+  # icon = "trash",
+  color = "#1643B6",
+  value = as_date(most_recent$date)
+)
+```
+
+::: {.card title="most popular wr combos" height="68%"}
 ```{r}
 most_popular_combo <- wr |> mutate(character = str_remove(character, " \\(.*\\)$")) |> count(character, kart) |> arrange(desc(n))
 
-# most_popular_combo |> knitr::kable()
-
 reactable(most_popular_combo,
-  striped = TRUE, highlight = TRUE, wrap = FALSE,
-  compact = TRUE,
-  pagination = FALSE,
-  # paginationType = "simple", defaultPageSize = 20,
-  )
+  striped = TRUE, highlight = TRUE, wrap = FALSE, compact = TRUE, pagination = FALSE,
+  defaultColDef = colDef(headerClass = "dashboard-tbl-header"))
 ```
 :::
