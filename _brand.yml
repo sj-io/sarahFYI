@@ -17,7 +17,7 @@ defaults:
   bootstrap:
     defaults: 
       nav-tabs-link-active-color: "#D2DDF9"
-      nav-tabs-link-active-border-color: "#D2DDF9 #D2DDF9 #D2DDF9"
+      nav-tabs-link-active-border-color: "#D2DDF9 #D2DDF9 #12235D"
       nav-tabs-link-hover-border-color: "#1643B6 #1643B6 #1643B6"
     rules: |
       body {
@@ -61,6 +61,7 @@ defaults:
       
       .card-header {
         background-color: $blue-600;
+        border-width: 1.5px;
       }
       
       .bslib-full-screen-enter {
