@@ -1,5 +1,5 @@
 ---
-title: "time trials"
+title: "MKW Time Trials"
 format: 
   dashboard:
     orientation: columns
@@ -260,7 +260,7 @@ list(
 )
 ```
 
-::: {.card title="most popular wr combos" height="68%"}
+::: {.card title="most popular wr combos"}
 ```{r}
 most_popular_combo <- wr |> mutate(character = str_remove(character, " \\(.*\\)$")) |> count(character, kart) |> arrange(desc(n))
 

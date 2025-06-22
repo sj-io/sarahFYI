@@ -15,16 +15,25 @@ website:
     title: false
     background: none
     left:
+        # home
       - href: index.qmd
         icon: house-fill
         text: " "
+        # about
       - href: about.qmd
         icon: person-arms-up
         text: " "
+        # gaming
+      # - href: gaming/index.qmd
+        # aria-label: "gaming"
       - icon: controller
-        href: gaming/index.qmd
+        menu: 
+          - href: gaming/index.qmd
+          - href: gaming/mkw/tt/index.qmd
+          - href: gaming/mkw/stats/index.qmd
+          - href: gaming/mk8dx/speedruns/48-track.qmd
         text: " "
-        aria-label: "gaming"
+        # scrapbook
       - icon: image
         href: screenies/index.qmd
         text: " "

@@ -1,8 +1,8 @@
 ---
-title: "MKW Stats"
+title: "MKW Game Stats"
 format: 
   dashboard:
-    orientation: rows
+    orientation: columns
 ---
 
 ```{r}
@@ -15,7 +15,7 @@ library(ggplot2)
 library(reactable)
 library(htmltools)
 # library(emojifont)
-library(plotly)
+# library(plotly)
 
 options(
   reactable.theme = reactableTheme(
@@ -76,29 +76,6 @@ if (!file.exists("drivers.csv")) {
 }
 ```
 
-## row 1 {height="40%"}
-### col 1
-
-```{r}
-#| title: Characters
-reactable(drivers,
-  striped = TRUE, highlight = TRUE, wrap = FALSE, 
-  compact = TRUE, pagination = FALSE, searchable = TRUE,
-  defaultColDef = colDef(headerClass = "dashboard-tbl-header"))
-```
-
-### col 2
-
-```{r}
-#| title: Karts
-reactable(karts,
-  striped = TRUE, highlight = TRUE, wrap = FALSE, 
-  compact = TRUE, pagination = FALSE, searchable = TRUE,
-  defaultColDef = colDef(headerClass = "dashboard-tbl-header"))
-```
-
-## row 2
-
 ```{r}
 if (!file.exists("all-combos.csv")) {
   
@@ -126,22 +103,114 @@ if (!file.exists("all-combos.csv")) {
   
   write_csv(all_combo, "all-combos.csv")
   
-  all_combo_weights <- all_combo |> 
-    summarise(
-      driver = str_flatten_comma(unique(driver)),
-      vehicle = str_flatten_comma(unique(vehicle)),
-      .by = c("speed", "acceleration", "weight", "handling")
-    )
+  combos_by_stats <- all_combo |> 
+  summarise(driver = str_flatten_comma(unique(driver)),
+            .by = c("vehicle", "speed", "acceleration", "weight", "handling")) |> 
+  summarise(vehicle = str_flatten_comma(unique(vehicle)),
+            .by = c("driver", "speed", "acceleration", "weight", "handling")) |> 
+  select(driver, vehicle, everything())
   
-  write_csv(all_combo_weights, "all-combo-weights.csv")
+  write_csv(combos_by_stats, "distinct-combos.csv")
   
 } else {
   all_combo <- read_csv("all-combos.csv")
-  all_combo_weights <- read_csv("all-combo-weights.csv")
+  distinct_combo <- read_csv("distinct-combos.csv")
 }
 ```
 
-### col 1 {.tabset}
+## col 1
+
+### row 1 {.tabset}
+
+```{r}
+#| title: Character Classes
+v_driver_classes <- c("lightest", "lighter", "light", "medium", "heavy", "heavier", "heaviest", "bowser") |> tibble::as_tibble_col("class")
+
+driver_class <- drivers |> 
+  summarise(
+    driver = str_flatten_comma(unique(driver)),
+    .by = c("speed", "acceleration", "weight", "handling")) |> 
+  bind_cols(v_driver_classes) |> 
+  select(class, driver, everything())
+
+reactable(driver_class,
+  striped = TRUE, highlight = TRUE, wrap = TRUE, 
+  compact = TRUE, pagination = FALSE, searchable = TRUE,
+  defaultColDef = colDef(headerClass = "dashboard-tbl-header"),
+  columns = list(
+    driver = colDef(name = "driver", minWidth = 130, align = "center"),
+    speed = colDef(name = "speed", maxWidth = 80, align = "center"),
+    acceleration = colDef(name = "acceleration", maxWidth = 80, align = "center"),
+    weight = colDef(name = "weight", maxWidth = 80, align = "center"),
+    handling = colDef(name = "handling", maxWidth = 80, align = "center")
+  ),)
+```
+
+```{r}
+#| title: Kart Classes
+kart_class <- karts |> 
+  summarise(
+    vehicle = str_flatten_comma(unique(vehicle)),
+    .by = c("speed", "acceleration", "weight", "handling")) |> 
+  select(vehicle, everything())
+
+reactable(kart_class,
+  striped = TRUE, highlight = TRUE, wrap = TRUE, 
+  compact = TRUE, pagination = FALSE, searchable = TRUE,
+  defaultColDef = colDef(headerClass = "dashboard-tbl-header"),
+  columns = list(
+    class = colDef(name = "class", maxWidth = 80, align = "center"),
+    vehicle = colDef(name = "vehicle", minWidth = 130, align = "center"),
+    speed = colDef(name = "speed", maxWidth = 80, align = "center"),
+    acceleration = colDef(name = "acceleration", maxWidth = 85, align = "center"),
+    weight = colDef(name = "weight", maxWidth = 80, align = "center"),
+    handling = colDef(name = "handling", maxWidth = 80, align = "center")
+  ),)
+```
+
+```{r}
+#| title: All Characters
+reactable(drivers,
+  striped = TRUE, highlight = TRUE, wrap = FALSE, 
+  compact = TRUE, pagination = FALSE, searchable = TRUE,
+  defaultColDef = colDef(headerClass = "dashboard-tbl-header"))
+```
+
+```{r}
+#| title: All Karts
+reactable(karts,
+  striped = TRUE, highlight = TRUE, wrap = FALSE, 
+  compact = TRUE, pagination = FALSE, searchable = TRUE,
+  defaultColDef = colDef(headerClass = "dashboard-tbl-header"))
+```
+
+### row 2 {.tabset}
+
+```{r}
+#| title: Distinct Combos
+driver_classes <- driver_class |> 
+  select(class, driver) |> 
+  mutate(driver = str_remove_all(driver, "\\*"))
+
+distinct_combo <- distinct_combo |> 
+  left_join(driver_classes, by = "driver") |> 
+  select(driver_class = class, driver, vehicle, everything())
+
+reactable(distinct_combo,
+  striped = TRUE, highlight = TRUE, wrap = TRUE,
+  compact = TRUE, pagination = FALSE, searchable = TRUE,
+  defaultColDef = colDef(headerClass = "dashboard-tbl-header"),
+  columns = list(
+    driver_class = colDef(name = "driver class", maxWidth = 80, align = "center"),
+    driver = colDef(name = "driver", minWidth = 130, align = "center"),
+    vehicle = colDef(name = "vehicle", minWidth = 130, align = "center"),
+    speed = colDef(name = "speed", maxWidth = 80, align = "center"),
+    acceleration = colDef(name = "acceleration", maxWidth = 80, align = "center"),
+    weight = colDef(name = "weight", maxWidth = 80, align = "center"),
+    handling = colDef(name = "handling", maxWidth = 80, align = "center")
+  ),
+  )
+```
 
 ```{r}
 #| title: All Combos
@@ -153,36 +222,22 @@ reactable(all_combo,
   )
 ```
 
+## col 2
+
+#### row 1 {height="10%"}
+
 ```{r}
-#| title: Distinct Combos
-reactable(all_combo_weights |> select(driver, vehicle, everything()),
-  striped = TRUE, highlight = TRUE, wrap = TRUE, 
-  compact = TRUE, pagination = FALSE, searchable = TRUE,
-  defaultColDef = colDef(headerClass = "dashboard-tbl-header"),
-  columns = list(
-    driver = colDef(name = "driver", minWidth = 130, align = "center"),
-    vehicle = colDef(name = "vehicle", minWidth = 130, align = "center"),
-    speed = colDef(name = "speed", maxWidth = 80, align = "center"),
-    acceleration = colDef(name = "acceleration", maxWidth = 80, align = "center"),
-    weight = colDef(name = "weight", maxWidth = 80, align = "center"),
-    handling = colDef(name = "handling", maxWidth = 80, align = "center")
-  ),
-  )
+#| output: false
+
+ojs_define(data = distinct_combo)
 ```
 
-### col 2
-
-#### row 1 {height="15%"}
 
 ```{ojs}
-<!-- import {addTooltips} from "@mkfreeman/plot-tooltip" -->
-
-data = FileAttachment("all-combo-weights.csv").csv({ typed: true })
-
 viewof combo_stat_1 = Inputs.select(
   ["speed", "acceleration", "weight", "handling"],
   { value: "speed",
-    label: "stat 1:"
+    label: "Stat 1:"
   }
 )
 ```
@@ -192,7 +247,7 @@ viewof combo_stat_1 = Inputs.select(
 viewof combo_stat_2 = Inputs.select(
   ["speed", "acceleration", "weight", "handling"],
   { value: "weight",
-    label: "stat 2:"
+    label: "Stat 2:"
   }
 )
 ```
@@ -204,19 +259,19 @@ Plot.plot({
   grid: true,
   inset: 10,
   marks: [
-    Plot.dot(data, {
+    Plot.dot(transpose(data), {
       x: combo_stat_1,
       y: combo_stat_2,
       fill: "gold",
       stroke: "gold"
     }),
-    Plot.tip(data, Plot.pointer({
+    Plot.tip(transpose(data), Plot.pointer({
       x: combo_stat_1,
       y: combo_stat_2,
-      channels: {driver: "driver", vehicle: "vehicle", speed: "speed", acceleration: "acceleration", weight: "weight", handling: "handling"},
+      channels: {driver: "driver_class", vehicle: "vehicle", speed: "speed", acceleration: "acceleration", weight: "weight", handling: "handling"},
       fill: "#0c2461",
       stroke: "gold",
-      lineWidth: 20,
+      <!-- lineWidth: 20, -->
       textOverflow: null
     }))
   ]

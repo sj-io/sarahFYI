@@ -1,0 +1,121 @@
+driver,vehicle,speed,acceleration,weight,handling
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa","Standard Bike, Cute Scoot, Tune Thumper",3,18,4,15
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa","Rally Bike, Hyper Pipe, Fin Twin, Dolphin Dasher",4,17,4,15
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Pipe Frame,4,17,5,14
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa","Mach Rocket, R.O.B. H.O.G.",5,16,4,15
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Biddybuggy,5,16,5,14
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa","Baby Blooper, Loco Moto",6,15,5,14
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa","Standard Kart, Plushbuggy",7,14,6,13
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Blastronaut III,7,15,7,11
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Dread Sled,8,12,7,13
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa","Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",8,13,7,12
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Funky Dorrie,8,14,8,10
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa","Big Horn, Billdozer",9,11,9,11
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",W-Twin Chopper,9,12,6,13
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Rallygator,9,12,10,9
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa","Chargin' Truck, Tiny Titan, Li'l Dumpy, Mecha Trike, Bowser Bruiser",10,10,9,11
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Reel Racer,10,11,7,12
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Lobster Roller,10,11,10,9
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Junkyard Hog,10,12,8,10
+"Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Stellar Sled,11,9,9,11
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby","Standard Bike, Cute Scoot, Tune Thumper",4,17,5,14
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby","Rally Bike, Hyper Pipe, Fin Twin, Dolphin Dasher",5,16,5,14
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",Pipe Frame,5,16,6,13
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby","Mach Rocket, R.O.B. H.O.G.",6,15,5,14
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",Biddybuggy,6,15,6,13
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby","Baby Blooper, Loco Moto",7,14,6,13
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby","Standard Kart, Plushbuggy",8,13,7,12
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",Blastronaut III,8,14,8,10
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",Dread Sled,9,11,8,12
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby","Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",9,12,8,11
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",Funky Dorrie,9,13,9,9
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby","Big Horn, Billdozer",10,10,10,10
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",W-Twin Chopper,10,11,7,12
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",Rallygator,10,11,11,8
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby","Chargin' Truck, Tiny Titan, Li'l Dumpy, Mecha Trike, Bowser Bruiser",11,9,10,10
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",Reel Racer,11,10,8,11
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",Lobster Roller,11,10,11,8
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",Junkyard Hog,11,11,9,9
+"Toad, Toadette, Koopa Troopa, Shy Guy, Lakitu, Nabbit, Cheep Cheep, Stingby",Stellar Sled,12,8,10,10
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin","Standard Bike, Cute Scoot, Tune Thumper",5,16,6,13
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin","Rally Bike, Hyper Pipe, Fin Twin, Dolphin Dasher",6,15,6,13
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",Pipe Frame,6,15,7,12
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin","Mach Rocket, R.O.B. H.O.G.",7,14,6,13
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",Biddybuggy,7,14,7,12
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin","Baby Blooper, Loco Moto",8,13,7,12
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin","Standard Kart, Plushbuggy",9,12,8,11
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",Blastronaut III,9,13,9,9
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",Dread Sled,10,10,9,11
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin","Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",10,11,9,10
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",Funky Dorrie,10,12,10,8
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin","Big Horn, Billdozer",11,9,11,9
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",W-Twin Chopper,11,10,8,11
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",Rallygator,11,10,12,7
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin","Chargin' Truck, Tiny Titan, Li'l Dumpy, Mecha Trike, Bowser Bruiser",12,8,11,9
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",Reel Racer,12,9,9,10
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",Lobster Roller,12,9,12,7
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",Junkyard Hog,12,10,10,8
+"Peach, Daisy, Yoshi, Bowser Jr., Monty Mole, Coin Coffer, Dolphin",Stellar Sled,13,7,11,9
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey","Standard Bike, Cute Scoot, Tune Thumper",6,15,7,12
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey","Rally Bike, Hyper Pipe, Fin Twin, Dolphin Dasher",7,14,7,12
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",Pipe Frame,7,14,8,11
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey","Mach Rocket, R.O.B. H.O.G.",8,13,7,12
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",Biddybuggy,8,13,8,11
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey","Baby Blooper, Loco Moto",9,12,8,11
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey","Standard Kart, Plushbuggy",10,11,9,10
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",Blastronaut III,10,12,10,8
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",Dread Sled,11,9,10,10
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey","Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",11,10,10,9
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",Funky Dorrie,11,11,11,7
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey","Big Horn, Billdozer",12,8,12,8
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",W-Twin Chopper,12,9,9,10
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",Rallygator,12,9,13,6
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey","Chargin' Truck, Tiny Titan, Li'l Dumpy, Mecha Trike, Bowser Bruiser",13,7,12,8
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",Reel Racer,13,8,10,9
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",Lobster Roller,13,8,13,6
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",Junkyard Hog,13,9,11,7
+"Mario, Luigi, Birdo, Hammer Bro, Penguin, Rocky Wrench, Pokey",Stellar Sled,14,6,12,8
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor","Standard Bike, Cute Scoot, Tune Thumper",7,14,8,11
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor","Rally Bike, Hyper Pipe, Fin Twin, Dolphin Dasher",8,13,8,11
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",Pipe Frame,8,13,9,10
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor","Mach Rocket, R.O.B. H.O.G.",9,12,8,11
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",Biddybuggy,9,12,9,10
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor","Baby Blooper, Loco Moto",10,11,9,10
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor","Standard Kart, Plushbuggy",11,10,10,9
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",Blastronaut III,11,11,11,7
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",Dread Sled,12,8,11,9
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor","Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",12,9,11,8
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",Funky Dorrie,12,10,12,6
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor","Big Horn, Billdozer",13,7,13,7
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",W-Twin Chopper,13,8,10,9
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",Rallygator,13,8,14,5
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor","Chargin' Truck, Tiny Titan, Li'l Dumpy, Mecha Trike, Bowser Bruiser",14,6,13,7
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",Reel Racer,14,7,11,8
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",Lobster Roller,14,7,14,5
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",Junkyard Hog,14,8,12,6
+"Rosalina, Pauline, King Boo, Piranha Plant, Snowman, Cataquack, Conkdor",Stellar Sled,15,5,13,7
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta","Standard Bike, Cute Scoot, Tune Thumper",8,13,9,10
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta","Rally Bike, Hyper Pipe, Fin Twin, Dolphin Dasher",9,12,9,10
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",Pipe Frame,9,12,10,9
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta","Mach Rocket, R.O.B. H.O.G.",10,11,9,10
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",Biddybuggy,10,11,10,9
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta","Baby Blooper, Loco Moto",11,10,10,9
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta","Standard Kart, Plushbuggy",12,9,11,8
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",Blastronaut III,12,10,12,6
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",Dread Sled,13,7,12,8
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta","Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",13,8,12,7
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",Funky Dorrie,13,9,13,5
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta","Big Horn, Billdozer",14,6,14,6
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",W-Twin Chopper,14,7,11,8
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",Rallygator,14,7,15,4
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta","Chargin' Truck, Tiny Titan, Li'l Dumpy, Mecha Trike, Bowser Bruiser",15,5,14,6
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",Reel Racer,15,6,12,7
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",Lobster Roller,15,6,15,4
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",Junkyard Hog,15,7,13,5
+"Wario, Waluigi, Donkey Kong, Wiggler, Cow, Chargin' Chuck, Pianta",Stellar Sled,16,4,14,6
+"Baby Peach, Baby Daisy, Para-Biddybud, Swoop","Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",7,14,6,13
+"Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Funky Dorrie,7,15,7,11
+"Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Stellar Sled,10,10,8,12
+Bowser,"Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",13,7,13,7
+Bowser,Funky Dorrie,13,8,14,5
+Bowser,Stellar Sled,16,3,15,6
