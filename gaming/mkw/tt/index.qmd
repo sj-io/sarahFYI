@@ -91,6 +91,9 @@ all_tt <- tt |>
          date_pr = as_date(date_pr)) |> 
   arrange(diff)
 
+attempts <- tt |> 
+  summarise(attempts = n(), .by = "track")
+
 best_tt <- all_tt |> 
   slice_min(time_pr, n = 1, by = "track")
 
@@ -108,7 +111,8 @@ most_recent <- tt |>
 ```{r tblPB}
 pb_tbl <- best_tt |> 
   select(track, starts_with("date"), starts_with("time"), diff) |> 
-  mutate(across(starts_with("time"), as.character))
+  mutate(across(starts_with("time"), as.character)) |> 
+  left_join(attempts)
 
 reactable(pb_tbl,
   striped = TRUE, highlight = TRUE, wrap = FALSE,
@@ -124,7 +128,8 @@ reactable(pb_tbl,
     time_pr = colDef(name = "time", maxWidth = 80),
     date_wr = colDef(name = "date", maxWidth = 80),
     time_wr = colDef(name = "time", maxWidth = 80),
-    diff = colDef(name = "difference", minWidth = 60)
+    diff = colDef(name = "difference", minWidth = 60),
+    attempts = colDef(name = "attempts", maxWidth = 70)
   ),
   columnGroups = list(
     colGroup(name = "personal record", 
@@ -166,7 +171,10 @@ daily_tt <- tt |>
   mutate(date = as_date(date)) |> 
   count(date)
 
-gg_tt_count <- daily_tt |> 
+all_dates <- seq.Date(min(daily_tt$date), Sys.Date(), by = "day") |> tibble::as_tibble_col("date")
+all_dates <- all_dates |> left_join(daily_tt) |> mutate(n = replace_na(n, 0))
+
+gg_tt_count <- all_dates |> 
   ggplot() +
   geom_line(aes(x = date, y = n), color = "darkgoldenrod") +
   geom_point(aes(x = date, y = n), color = "darkgoldenrod") +

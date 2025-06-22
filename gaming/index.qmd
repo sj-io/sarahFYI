@@ -6,6 +6,8 @@ title: "gaming stuff"
 
 [mkw time trials](mkw/tt)
 
+[mkw character + kart stats](mkw/stats)
+
 # mario kart 8 deluxe
 
 [speedruns](mk8dx/speedruns/48-track.qmd)

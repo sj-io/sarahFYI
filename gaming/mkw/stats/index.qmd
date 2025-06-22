@@ -1,0 +1,225 @@
+---
+title: "MKW Stats"
+format: 
+  dashboard:
+    orientation: rows
+---
+
+```{r}
+library(readr)
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(lubridate)
+library(ggplot2)
+library(reactable)
+library(htmltools)
+# library(emojifont)
+library(plotly)
+
+options(
+  reactable.theme = reactableTheme(
+    color = "#D2DDF9",
+    backgroundColor = "#0c2461",
+    borderColor = "#0c2461",
+    stripedColor = "#113388",
+    highlightColor = "darkgoldenrod",
+    style = list(fontSize = "11px"),
+    searchInputStyle = list(
+      width = "100%", 
+      borderRadius = "0px",
+      backgroundColor = "#4976E9", 
+      fontColor = "#D2DDF9",
+      "::placeholder" = list(color = "#0c2461"))
+  ))
+```
+
+```{r}
+if (!file.exists("drivers.csv")) {
+  library(rvest)
+  library(readr)
+  
+  raw_stats <- read_html("https://www.mariowiki.com/Mario_Kart_World") |> 
+    html_elements(".wikitable.spinoff.mk") |> 
+    html_table() 
+  
+  kart_driver <- raw_stats |> purrr::pluck(9)
+  
+  driver_names <- kart_driver[1, ] |> 
+    pivot_longer(everything(), names_to = NULL, values_to = "name") |> 
+    purrr::pluck(1) |> 
+    str_to_lower()
+  
+  driver_stats <- kart_driver[2:9, ]
+  colnames(driver_stats) <- driver_names
+  
+  kart_names <- str_replace(driver_names, "driver", "vehicle")
+  kart_stats <- kart_driver[12:30, ]
+  colnames(kart_stats) <- kart_names
+  
+  extra_stats <- raw_stats |> purrr::pluck(10)
+  extra_stats <- extra_stats[2:4, ]
+  colnames(extra_stats) <- kart_names
+
+  drivers <- driver_stats |> separate_longer_delim(driver, ", ")
+  karts <- kart_stats |> separate_longer_delim(vehicle, ", ")
+  extra <- extra_stats |> separate_longer_delim(vehicle, ", ")
+  
+  write_csv(drivers, "drivers.csv")
+  write_csv(karts, "karts.csv")
+  write_csv(extra, "extra.csv")
+  
+} else {
+  drivers <- read_csv("drivers.csv")
+  karts <- read_csv("karts.csv")
+  extra <- read_csv("extra.csv")
+}
+```
+
+## row 1 {height="40%"}
+### col 1
+
+```{r}
+#| title: Characters
+reactable(drivers,
+  striped = TRUE, highlight = TRUE, wrap = FALSE, 
+  compact = TRUE, pagination = FALSE, searchable = TRUE,
+  defaultColDef = colDef(headerClass = "dashboard-tbl-header"))
+```
+
+### col 2
+
+```{r}
+#| title: Karts
+reactable(karts,
+  striped = TRUE, highlight = TRUE, wrap = FALSE, 
+  compact = TRUE, pagination = FALSE, searchable = TRUE,
+  defaultColDef = colDef(headerClass = "dashboard-tbl-header"))
+```
+
+## row 2
+
+```{r}
+if (!file.exists("all-combos.csv")) {
+  
+  special_combo <- drivers |> 
+  filter(str_detect(driver, "\\*")) |> 
+  cross_join(extra, suffix = c("_driver", "_kart")) |> 
+  pivot_longer(
+    c(starts_with("speed"), starts_with("acceleration"), starts_with("weight"), starts_with("handling")),
+    names_to = "stat", names_pattern = "(.*)_.*"
+  ) |> 
+  summarise(value = sum(value), .by = c("driver", "vehicle", "stat")) |> 
+  pivot_wider(names_from = stat, values_from = value)
+
+  all_combo <- drivers |> 
+  filter(!str_detect(driver, "\\*")) |> 
+  cross_join(karts, suffix = c("_driver", "_kart")) |> 
+  pivot_longer(
+    c(starts_with("speed"), starts_with("acceleration"), starts_with("weight"), starts_with("handling")),
+    names_to = "stat", names_pattern = "(.*)_.*"
+  ) |> 
+  summarise(value = sum(value), .by = c("driver", "vehicle", "stat")) |> 
+  pivot_wider(names_from = stat, values_from = value) |> 
+  bind_rows(special_combo) |> 
+  mutate(across(c("driver", "vehicle"), ~ str_remove_all(., "\\*")))
+  
+  write_csv(all_combo, "all-combos.csv")
+  
+  all_combo_weights <- all_combo |> 
+    summarise(
+      driver = str_flatten_comma(unique(driver)),
+      vehicle = str_flatten_comma(unique(vehicle)),
+      .by = c("speed", "acceleration", "weight", "handling")
+    )
+  
+  write_csv(all_combo_weights, "all-combo-weights.csv")
+  
+} else {
+  all_combo <- read_csv("all-combos.csv")
+  all_combo_weights <- read_csv("all-combo-weights.csv")
+}
+```
+
+### col 1 {.tabset}
+
+```{r}
+#| title: All Combos
+reactable(all_combo,
+  striped = TRUE, highlight = TRUE, wrap = FALSE, 
+  compact = TRUE, pagination = TRUE, searchable = TRUE,
+  defaultPageSize = 20,
+  defaultColDef = colDef(headerClass = "dashboard-tbl-header")
+  )
+```
+
+```{r}
+#| title: Distinct Combos
+reactable(all_combo_weights |> select(driver, vehicle, everything()),
+  striped = TRUE, highlight = TRUE, wrap = TRUE, 
+  compact = TRUE, pagination = FALSE, searchable = TRUE,
+  defaultColDef = colDef(headerClass = "dashboard-tbl-header"),
+  columns = list(
+    driver = colDef(name = "driver", minWidth = 130, align = "center"),
+    vehicle = colDef(name = "vehicle", minWidth = 130, align = "center"),
+    speed = colDef(name = "speed", maxWidth = 80, align = "center"),
+    acceleration = colDef(name = "acceleration", maxWidth = 80, align = "center"),
+    weight = colDef(name = "weight", maxWidth = 80, align = "center"),
+    handling = colDef(name = "handling", maxWidth = 80, align = "center")
+  ),
+  )
+```
+
+### col 2
+
+#### row 1 {height="15%"}
+
+```{ojs}
+<!-- import {addTooltips} from "@mkfreeman/plot-tooltip" -->
+
+data = FileAttachment("all-combo-weights.csv").csv({ typed: true })
+
+viewof combo_stat_1 = Inputs.select(
+  ["speed", "acceleration", "weight", "handling"],
+  { value: "speed",
+    label: "stat 1:"
+  }
+)
+```
+
+
+```{ojs}
+viewof combo_stat_2 = Inputs.select(
+  ["speed", "acceleration", "weight", "handling"],
+  { value: "weight",
+    label: "stat 2:"
+  }
+)
+```
+
+#### row 2
+
+```{ojs}
+Plot.plot({
+  grid: true,
+  inset: 10,
+  marks: [
+    Plot.dot(data, {
+      x: combo_stat_1,
+      y: combo_stat_2,
+      fill: "gold",
+      stroke: "gold"
+    }),
+    Plot.tip(data, Plot.pointer({
+      x: combo_stat_1,
+      y: combo_stat_2,
+      channels: {driver: "driver", vehicle: "vehicle", speed: "speed", acceleration: "acceleration", weight: "weight", handling: "handling"},
+      fill: "#0c2461",
+      stroke: "gold",
+      lineWidth: 20,
+      textOverflow: null
+    }))
+  ]
+})
+```
+
