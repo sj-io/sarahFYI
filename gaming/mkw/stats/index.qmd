@@ -6,6 +6,7 @@ format:
 ---
 
 ```{r}
+# libraries
 library(readr)
 library(tidyr)
 library(dplyr)
@@ -14,9 +15,8 @@ library(lubridate)
 library(ggplot2)
 library(reactable)
 library(htmltools)
-# library(emojifont)
-# library(plotly)
 
+# table themes
 options(
   reactable.theme = reactableTheme(
     color = "#D2DDF9",
@@ -25,6 +25,12 @@ options(
     stripedColor = "#113388",
     highlightColor = "darkgoldenrod",
     style = list(fontSize = "11px"),
+    filterInputStyle = list(
+      borderRadius = "0px",
+      backgroundColor = "#4976E9", 
+      color = "#D2DDF9"
+      # "::placeholder" = list(color = "#0c2461")
+    ),
     searchInputStyle = list(
       width = "100%", 
       borderRadius = "0px",
@@ -35,41 +41,50 @@ options(
 ```
 
 ```{r}
-if (!file.exists("drivers.csv")) {
+if (!file.exists("drivers.csv") | !file.exists("karts.csv") | !file.exists("extra.csv")) {
   library(rvest)
   library(readr)
   
+  # scrape all table data from mariowiki's mkw page
   raw_stats <- read_html("https://www.mariowiki.com/Mario_Kart_World") |> 
     html_elements(".wikitable.spinoff.mk") |> 
     html_table() 
   
+  # kart and driver data is combined; must separate and correct col names
   kart_driver <- raw_stats |> purrr::pluck(9)
   
+  # get col names
   driver_names <- kart_driver[1, ] |> 
     pivot_longer(everything(), names_to = NULL, values_to = "name") |> 
     purrr::pluck(1) |> 
     str_to_lower()
   
+  # pull driver data
   driver_stats <- kart_driver[2:9, ]
   colnames(driver_stats) <- driver_names
   
+  # pull kart data
   kart_names <- str_replace(driver_names, "driver", "vehicle")
   kart_stats <- kart_driver[12:30, ]
   colnames(kart_stats) <- kart_names
   
+  # pull special combo data
   extra_stats <- raw_stats |> purrr::pluck(10)
   extra_stats <- extra_stats[2:4, ]
   colnames(extra_stats) <- kart_names
 
+  # pivot longer
   drivers <- driver_stats |> separate_longer_delim(driver, ", ")
   karts <- kart_stats |> separate_longer_delim(vehicle, ", ")
   extra <- extra_stats |> separate_longer_delim(vehicle, ", ")
   
+  # save
   write_csv(drivers, "drivers.csv")
   write_csv(karts, "karts.csv")
   write_csv(extra, "extra.csv")
   
 } else {
+  # read data
   drivers <- read_csv("drivers.csv")
   karts <- read_csv("karts.csv")
   extra <- read_csv("extra.csv")
@@ -79,38 +94,51 @@ if (!file.exists("drivers.csv")) {
 ```{r}
 if (!file.exists("all-combos.csv")) {
   
-  special_combo <- drivers |> 
-  filter(str_detect(driver, "\\*")) |> 
-  cross_join(extra, suffix = c("_driver", "_kart")) |> 
-  pivot_longer(
-    c(starts_with("speed"), starts_with("acceleration"), starts_with("weight"), starts_with("handling")),
-    names_to = "stat", names_pattern = "(.*)_.*"
-  ) |> 
-  summarise(value = sum(value), .by = c("driver", "vehicle", "stat")) |> 
-  pivot_wider(names_from = stat, values_from = value)
+  #' characters with an * have different stats for the karts in `extra`
+  special_drivers <- drivers |> filter(str_detect(driver, "\\*"))
+  
+  special_combo <- special_drivers |> 
+    cross_join(extra, suffix = c("_driver", "_kart")) |> 
+    pivot_longer(
+      c(starts_with("speed"), 
+        starts_with("acceleration"), 
+        starts_with("weight"), 
+        starts_with("handling")),
+      names_to = "stat", 
+      names_pattern = "(.*)_.*"
+    ) |> 
+    summarise(value = sum(value), .by = c("driver", "vehicle", "stat")) |> 
+    pivot_wider(names_from = stat, values_from = value)
 
   all_combo <- drivers |> 
-  filter(!str_detect(driver, "\\*")) |> 
-  cross_join(karts, suffix = c("_driver", "_kart")) |> 
-  pivot_longer(
-    c(starts_with("speed"), starts_with("acceleration"), starts_with("weight"), starts_with("handling")),
-    names_to = "stat", names_pattern = "(.*)_.*"
-  ) |> 
-  summarise(value = sum(value), .by = c("driver", "vehicle", "stat")) |> 
-  pivot_wider(names_from = stat, values_from = value) |> 
-  bind_rows(special_combo) |> 
-  mutate(across(c("driver", "vehicle"), ~ str_remove_all(., "\\*")))
+    cross_join(karts, suffix = c("_driver", "_kart")) |> 
+    mutate(vehicle = str_remove_all(vehicle, "\\*")) |> 
+    anti_join(special_combo, by = c("driver", "vehicle")) |> 
+    pivot_longer(
+      c(starts_with("speed"),
+        starts_with("acceleration"),
+        starts_with("weight"),
+        starts_with("handling")),
+      names_to = "stat",
+      names_pattern = "(.*)_.*"
+    ) |>
+    summarise(value = sum(value), .by = c("driver", "vehicle", "stat")) |>
+    pivot_wider(names_from = stat, values_from = value) |>
+    bind_rows(special_combo) |>
+    mutate(across(c("driver", "vehicle"), ~ str_remove_all(., "\\*")))
   
   write_csv(all_combo, "all-combos.csv")
   
-  combos_by_stats <- all_combo |> 
-  summarise(driver = str_flatten_comma(unique(driver)),
-            .by = c("vehicle", "speed", "acceleration", "weight", "handling")) |> 
-  summarise(vehicle = str_flatten_comma(unique(vehicle)),
-            .by = c("driver", "speed", "acceleration", "weight", "handling")) |> 
-  select(driver, vehicle, everything())
+  distinct_combo <- all_combo |> 
+    summarise(
+      driver = str_flatten_comma(unique(driver)),
+      .by = c("vehicle", "speed", "acceleration", "weight", "handling")) |> 
+    summarise(
+      vehicle = str_flatten_comma(unique(vehicle)),
+      .by = c("driver", "speed", "acceleration", "weight", "handling")) |> 
+    select(driver, vehicle, everything())
   
-  write_csv(combos_by_stats, "distinct-combos.csv")
+  write_csv(distinct_combo, "distinct-combos.csv")
   
 } else {
   all_combo <- read_csv("all-combos.csv")
@@ -194,16 +222,18 @@ driver_classes <- driver_class |>
 
 distinct_combo <- distinct_combo |> 
   left_join(driver_classes, by = "driver") |> 
-  select(driver_class = class, driver, vehicle, everything())
+  mutate(class_n = str_count(class)) |>  
+  arrange(desc(class_n)) |> 
+  select(driver_class = class, driver, vehicle, everything(), -class_n)
 
 reactable(distinct_combo,
   striped = TRUE, highlight = TRUE, wrap = TRUE,
-  compact = TRUE, pagination = FALSE, searchable = TRUE,
+  compact = TRUE, pagination = FALSE, searchable = TRUE, 
   defaultColDef = colDef(headerClass = "dashboard-tbl-header"),
   columns = list(
-    driver_class = colDef(name = "driver class", maxWidth = 80, align = "center"),
-    driver = colDef(name = "driver", minWidth = 130, align = "center"),
-    vehicle = colDef(name = "vehicle", minWidth = 130, align = "center"),
+    driver_class = colDef(name = "driver class", maxWidth = 80, align = "center", filterable = TRUE),
+    driver = colDef(name = "driver", minWidth = 130, align = "center", filterable = TRUE),
+    vehicle = colDef(name = "vehicle", minWidth = 130, align = "center", filterable = TRUE),
     speed = colDef(name = "speed", maxWidth = 80, align = "center"),
     acceleration = colDef(name = "acceleration", maxWidth = 80, align = "center"),
     weight = colDef(name = "weight", maxWidth = 80, align = "center"),
@@ -232,6 +262,20 @@ reactable(all_combo,
 ojs_define(data = distinct_combo)
 ```
 
+```{ojs}
+viewof pick_driver = Inputs.radio(
+  ["lightest", "lighter", "light", "medium", "heavy", "heavier", "heaviest", "bowser"],
+  { value: "lightest",
+    label: "driver class:"}
+)
+```
+
+```{ojs}
+//| output: false
+filtered = transpose(data).filter((d) => pick_driver.includes(d.driver_class))
+```
+
+#### row 1 {height="10%"}
 
 ```{ojs}
 viewof combo_stat_1 = Inputs.select(
@@ -259,13 +303,13 @@ Plot.plot({
   grid: true,
   inset: 10,
   marks: [
-    Plot.dot(transpose(data), {
+    Plot.dot(filtered, {
       x: combo_stat_1,
       y: combo_stat_2,
       fill: "gold",
       stroke: "gold"
     }),
-    Plot.tip(transpose(data), Plot.pointer({
+    Plot.tip(filtered, Plot.pointer({
       x: combo_stat_1,
       y: combo_stat_2,
       channels: {driver: "driver_class", vehicle: "vehicle", speed: "speed", acceleration: "acceleration", weight: "weight", handling: "handling"},

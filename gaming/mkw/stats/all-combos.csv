@@ -1,4 +1,164 @@
 driver,vehicle,speed,acceleration,weight,handling
+Baby Peach,Standard Bike,3,19,3,15
+Baby Peach,Cute Scoot,3,19,3,15
+Baby Peach,Tune Thumper,3,19,3,15
+Baby Peach,Rally Bike,4,18,3,15
+Baby Peach,Hyper Pipe,4,18,3,15
+Baby Peach,Fin Twin,4,18,3,15
+Baby Peach,Dolphin Dasher,4,18,3,15
+Baby Peach,Pipe Frame,4,18,4,14
+Baby Peach,Mach Rocket,5,17,3,15
+Baby Peach,R.O.B. H.O.G.,5,17,3,15
+Baby Peach,Biddybuggy,5,17,4,14
+Baby Peach,Baby Blooper,6,16,4,14
+Baby Peach,Loco Moto,6,16,4,14
+Baby Peach,Standard Kart,7,15,5,13
+Baby Peach,Plushbuggy,7,15,5,13
+Baby Peach,Blastronaut III,7,16,6,11
+Baby Peach,Dread Sled,8,13,6,13
+Baby Peach,Rally Kart,8,14,6,12
+Baby Peach,Zoom Buggy,8,14,6,12
+Baby Peach,Hot Rod,8,14,6,12
+Baby Peach,Ribbit Revster,8,14,6,12
+Baby Peach,Roadster Royale,8,14,6,12
+Baby Peach,B Dasher,8,14,6,12
+Baby Peach,Bumble V,8,14,6,12
+Baby Peach,Carpet Flyer,8,14,6,12
+Baby Peach,Cloud 9,8,14,6,12
+Baby Peach,Funky Dorrie,8,15,7,10
+Baby Peach,Big Horn,9,12,8,11
+Baby Peach,Billdozer,9,12,8,11
+Baby Peach,W-Twin Chopper,9,13,5,13
+Baby Peach,Rallygator,9,13,9,9
+Baby Peach,Chargin' Truck,10,11,8,11
+Baby Peach,Tiny Titan,10,11,8,11
+Baby Peach,Li'l Dumpy,10,11,8,11
+Baby Peach,Mecha Trike,10,11,8,11
+Baby Peach,Bowser Bruiser,10,11,8,11
+Baby Peach,Reel Racer,10,12,6,12
+Baby Peach,Lobster Roller,10,12,9,9
+Baby Peach,Junkyard Hog,10,13,7,10
+Baby Peach,Stellar Sled,11,10,8,11
+Baby Daisy,Standard Bike,3,19,3,15
+Baby Daisy,Cute Scoot,3,19,3,15
+Baby Daisy,Tune Thumper,3,19,3,15
+Baby Daisy,Rally Bike,4,18,3,15
+Baby Daisy,Hyper Pipe,4,18,3,15
+Baby Daisy,Fin Twin,4,18,3,15
+Baby Daisy,Dolphin Dasher,4,18,3,15
+Baby Daisy,Pipe Frame,4,18,4,14
+Baby Daisy,Mach Rocket,5,17,3,15
+Baby Daisy,R.O.B. H.O.G.,5,17,3,15
+Baby Daisy,Biddybuggy,5,17,4,14
+Baby Daisy,Baby Blooper,6,16,4,14
+Baby Daisy,Loco Moto,6,16,4,14
+Baby Daisy,Standard Kart,7,15,5,13
+Baby Daisy,Plushbuggy,7,15,5,13
+Baby Daisy,Blastronaut III,7,16,6,11
+Baby Daisy,Dread Sled,8,13,6,13
+Baby Daisy,Rally Kart,8,14,6,12
+Baby Daisy,Zoom Buggy,8,14,6,12
+Baby Daisy,Hot Rod,8,14,6,12
+Baby Daisy,Ribbit Revster,8,14,6,12
+Baby Daisy,Roadster Royale,8,14,6,12
+Baby Daisy,B Dasher,8,14,6,12
+Baby Daisy,Bumble V,8,14,6,12
+Baby Daisy,Carpet Flyer,8,14,6,12
+Baby Daisy,Cloud 9,8,14,6,12
+Baby Daisy,Funky Dorrie,8,15,7,10
+Baby Daisy,Big Horn,9,12,8,11
+Baby Daisy,Billdozer,9,12,8,11
+Baby Daisy,W-Twin Chopper,9,13,5,13
+Baby Daisy,Rallygator,9,13,9,9
+Baby Daisy,Chargin' Truck,10,11,8,11
+Baby Daisy,Tiny Titan,10,11,8,11
+Baby Daisy,Li'l Dumpy,10,11,8,11
+Baby Daisy,Mecha Trike,10,11,8,11
+Baby Daisy,Bowser Bruiser,10,11,8,11
+Baby Daisy,Reel Racer,10,12,6,12
+Baby Daisy,Lobster Roller,10,12,9,9
+Baby Daisy,Junkyard Hog,10,13,7,10
+Baby Daisy,Stellar Sled,11,10,8,11
+Para-Biddybud,Standard Bike,3,19,3,15
+Para-Biddybud,Cute Scoot,3,19,3,15
+Para-Biddybud,Tune Thumper,3,19,3,15
+Para-Biddybud,Rally Bike,4,18,3,15
+Para-Biddybud,Hyper Pipe,4,18,3,15
+Para-Biddybud,Fin Twin,4,18,3,15
+Para-Biddybud,Dolphin Dasher,4,18,3,15
+Para-Biddybud,Pipe Frame,4,18,4,14
+Para-Biddybud,Mach Rocket,5,17,3,15
+Para-Biddybud,R.O.B. H.O.G.,5,17,3,15
+Para-Biddybud,Biddybuggy,5,17,4,14
+Para-Biddybud,Baby Blooper,6,16,4,14
+Para-Biddybud,Loco Moto,6,16,4,14
+Para-Biddybud,Standard Kart,7,15,5,13
+Para-Biddybud,Plushbuggy,7,15,5,13
+Para-Biddybud,Blastronaut III,7,16,6,11
+Para-Biddybud,Dread Sled,8,13,6,13
+Para-Biddybud,Rally Kart,8,14,6,12
+Para-Biddybud,Zoom Buggy,8,14,6,12
+Para-Biddybud,Hot Rod,8,14,6,12
+Para-Biddybud,Ribbit Revster,8,14,6,12
+Para-Biddybud,Roadster Royale,8,14,6,12
+Para-Biddybud,B Dasher,8,14,6,12
+Para-Biddybud,Bumble V,8,14,6,12
+Para-Biddybud,Carpet Flyer,8,14,6,12
+Para-Biddybud,Cloud 9,8,14,6,12
+Para-Biddybud,Funky Dorrie,8,15,7,10
+Para-Biddybud,Big Horn,9,12,8,11
+Para-Biddybud,Billdozer,9,12,8,11
+Para-Biddybud,W-Twin Chopper,9,13,5,13
+Para-Biddybud,Rallygator,9,13,9,9
+Para-Biddybud,Chargin' Truck,10,11,8,11
+Para-Biddybud,Tiny Titan,10,11,8,11
+Para-Biddybud,Li'l Dumpy,10,11,8,11
+Para-Biddybud,Mecha Trike,10,11,8,11
+Para-Biddybud,Bowser Bruiser,10,11,8,11
+Para-Biddybud,Reel Racer,10,12,6,12
+Para-Biddybud,Lobster Roller,10,12,9,9
+Para-Biddybud,Junkyard Hog,10,13,7,10
+Para-Biddybud,Stellar Sled,11,10,8,11
+Swoop,Standard Bike,3,19,3,15
+Swoop,Cute Scoot,3,19,3,15
+Swoop,Tune Thumper,3,19,3,15
+Swoop,Rally Bike,4,18,3,15
+Swoop,Hyper Pipe,4,18,3,15
+Swoop,Fin Twin,4,18,3,15
+Swoop,Dolphin Dasher,4,18,3,15
+Swoop,Pipe Frame,4,18,4,14
+Swoop,Mach Rocket,5,17,3,15
+Swoop,R.O.B. H.O.G.,5,17,3,15
+Swoop,Biddybuggy,5,17,4,14
+Swoop,Baby Blooper,6,16,4,14
+Swoop,Loco Moto,6,16,4,14
+Swoop,Standard Kart,7,15,5,13
+Swoop,Plushbuggy,7,15,5,13
+Swoop,Blastronaut III,7,16,6,11
+Swoop,Dread Sled,8,13,6,13
+Swoop,Rally Kart,8,14,6,12
+Swoop,Zoom Buggy,8,14,6,12
+Swoop,Hot Rod,8,14,6,12
+Swoop,Ribbit Revster,8,14,6,12
+Swoop,Roadster Royale,8,14,6,12
+Swoop,B Dasher,8,14,6,12
+Swoop,Bumble V,8,14,6,12
+Swoop,Carpet Flyer,8,14,6,12
+Swoop,Cloud 9,8,14,6,12
+Swoop,Funky Dorrie,8,15,7,10
+Swoop,Big Horn,9,12,8,11
+Swoop,Billdozer,9,12,8,11
+Swoop,W-Twin Chopper,9,13,5,13
+Swoop,Rallygator,9,13,9,9
+Swoop,Chargin' Truck,10,11,8,11
+Swoop,Tiny Titan,10,11,8,11
+Swoop,Li'l Dumpy,10,11,8,11
+Swoop,Mecha Trike,10,11,8,11
+Swoop,Bowser Bruiser,10,11,8,11
+Swoop,Reel Racer,10,12,6,12
+Swoop,Lobster Roller,10,12,9,9
+Swoop,Junkyard Hog,10,13,7,10
+Swoop,Stellar Sled,11,10,8,11
 Baby Mario,Standard Bike,3,18,4,15
 Baby Mario,Cute Scoot,3,18,4,15
 Baby Mario,Tune Thumper,3,18,4,15
@@ -1799,6 +1959,46 @@ Pianta,Reel Racer,15,6,12,7
 Pianta,Lobster Roller,15,6,15,4
 Pianta,Junkyard Hog,15,7,13,5
 Pianta,Stellar Sled,16,4,14,6
+Bowser,Standard Bike,9,12,10,9
+Bowser,Cute Scoot,9,12,10,9
+Bowser,Tune Thumper,9,12,10,9
+Bowser,Rally Bike,10,11,10,9
+Bowser,Hyper Pipe,10,11,10,9
+Bowser,Fin Twin,10,11,10,9
+Bowser,Dolphin Dasher,10,11,10,9
+Bowser,Pipe Frame,10,11,11,8
+Bowser,Mach Rocket,11,10,10,9
+Bowser,R.O.B. H.O.G.,11,10,10,9
+Bowser,Biddybuggy,11,10,11,8
+Bowser,Baby Blooper,12,9,11,8
+Bowser,Loco Moto,12,9,11,8
+Bowser,Standard Kart,13,8,12,7
+Bowser,Plushbuggy,13,8,12,7
+Bowser,Blastronaut III,13,9,13,5
+Bowser,Dread Sled,14,6,13,7
+Bowser,Rally Kart,14,7,13,6
+Bowser,Zoom Buggy,14,7,13,6
+Bowser,Hot Rod,14,7,13,6
+Bowser,Ribbit Revster,14,7,13,6
+Bowser,Roadster Royale,14,7,13,6
+Bowser,B Dasher,14,7,13,6
+Bowser,Bumble V,14,7,13,6
+Bowser,Carpet Flyer,14,7,13,6
+Bowser,Cloud 9,14,7,13,6
+Bowser,Funky Dorrie,14,8,14,4
+Bowser,Big Horn,15,5,15,5
+Bowser,Billdozer,15,5,15,5
+Bowser,W-Twin Chopper,15,6,12,7
+Bowser,Rallygator,15,6,16,3
+Bowser,Chargin' Truck,16,4,15,5
+Bowser,Tiny Titan,16,4,15,5
+Bowser,Li'l Dumpy,16,4,15,5
+Bowser,Mecha Trike,16,4,15,5
+Bowser,Bowser Bruiser,16,4,15,5
+Bowser,Reel Racer,16,5,13,6
+Bowser,Lobster Roller,16,5,16,3
+Bowser,Junkyard Hog,16,6,14,4
+Bowser,Stellar Sled,17,3,15,5
 Baby Peach,Rally Kart,7,14,6,13
 Baby Peach,Zoom Buggy,7,14,6,13
 Baby Peach,Hot Rod,7,14,6,13

@@ -85,9 +85,13 @@ wr <- raw_wr |>
 ```
 
 ```{r}
+lp <- scales::label_percent()
+
 all_tt <- tt |> 
   left_join(wr, by = "track", suffix = c("_pr", "_wr")) |> 
-  mutate(diff = seconds_to_period(period_to_seconds(time_pr) - period_to_seconds(time_wr)) |> round(3),
+  mutate(time_pr = period_to_seconds(time_pr),
+         time_wr = period_to_seconds(time_wr),
+         diff = seconds_to_period(time_pr - time_wr) |> round(3),
          date_pr = as_date(date_pr)) |> 
   arrange(diff)
 
@@ -200,18 +204,17 @@ ggplotly(gg_tt_count)
 ```{r}
 #| title: WR comparison
 all_tt_sec <- all_tt |> 
-  mutate(across(starts_with("time"), ~ period_to_seconds(.))) |> 
+  # mutate(across(starts_with("time"), ~ period_to_seconds(.))) |> 
   mutate(sd = sd(time_pr), .by = "track")
-best_tt_sec <- best_tt |> 
-  mutate(across(starts_with("time"), ~ period_to_seconds(.)))
-not_pr <- all_tt_sec |> anti_join(best_tt_sec)
+  # mutate(across(starts_with("time"), ~ period_to_seconds(.)))
+not_pr <- all_tt_sec |> anti_join(best_tt)
 gg_wr <- ggplot() +
   geom_point(
     data = not_pr, 
     aes(y = track, x = time_pr, text = label_pr), 
     color = "grey40", position = position_jitter()) +
   geom_point(
-    data = best_tt_sec, 
+    data = best_tt, 
     aes(y = track, x = time_pr, text = label_pr), 
     color = "gold") +
   # geom_violin(
