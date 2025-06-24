@@ -8,8 +8,6 @@ driver,vehicle,speed,acceleration,weight,handling
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop","Standard Kart, Plushbuggy",7,15,5,13
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Blastronaut III,7,16,6,11
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Dread Sled,8,13,6,13
-"Baby Peach, Baby Daisy, Para-Biddybud, Swoop","Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",8,14,6,12
-"Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Funky Dorrie,8,15,7,10
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop","Big Horn, Billdozer",9,12,8,11
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop",W-Twin Chopper,9,13,5,13
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Rallygator,9,13,9,9
@@ -17,7 +15,6 @@ driver,vehicle,speed,acceleration,weight,handling
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Reel Racer,10,12,6,12
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Lobster Roller,10,12,9,9
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Junkyard Hog,10,13,7,10
-"Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Stellar Sled,11,10,8,11
 "Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa","Standard Bike, Cute Scoot, Tune Thumper",3,18,4,15
 "Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa","Rally Bike, Hyper Pipe, Fin Twin, Dolphin Dasher",4,17,4,15
 "Baby Mario, Baby Luigi, Baby Rosalina, Goomba, Dry Bones, Sidestepper, Spike, Fish Bone, Peepa",Pipe Frame,4,17,5,14
@@ -141,8 +138,6 @@ Bowser,"Baby Blooper, Loco Moto",12,9,11,8
 Bowser,"Standard Kart, Plushbuggy",13,8,12,7
 Bowser,Blastronaut III,13,9,13,5
 Bowser,Dread Sled,14,6,13,7
-Bowser,"Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",14,7,13,6
-Bowser,Funky Dorrie,14,8,14,4
 Bowser,"Big Horn, Billdozer",15,5,15,5
 Bowser,W-Twin Chopper,15,6,12,7
 Bowser,Rallygator,15,6,16,3
@@ -150,7 +145,6 @@ Bowser,"Chargin' Truck, Tiny Titan, Li'l Dumpy, Mecha Trike, Bowser Bruiser",16,
 Bowser,Reel Racer,16,5,13,6
 Bowser,Lobster Roller,16,5,16,3
 Bowser,Junkyard Hog,16,6,14,4
-Bowser,Stellar Sled,17,3,15,5
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop","Rally Kart, Zoom Buggy, Hot Rod, Ribbit Revster, Roadster Royale, B Dasher, Bumble V, Carpet Flyer, Cloud 9",7,14,6,13
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Funky Dorrie,7,15,7,11
 "Baby Peach, Baby Daisy, Para-Biddybud, Swoop",Stellar Sled,10,10,8,12

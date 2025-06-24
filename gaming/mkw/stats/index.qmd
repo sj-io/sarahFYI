@@ -265,14 +265,14 @@ ojs_define(data = distinct_combo)
 ```{ojs}
 viewof pick_driver = Inputs.radio(
   ["lightest", "lighter", "light", "medium", "heavy", "heavier", "heaviest", "bowser"],
-  { value: "lightest",
+  { value: "heavy",
     label: "driver class:"}
 )
 ```
 
 ```{ojs}
 //| output: false
-filtered = transpose(data).filter((d) => pick_driver.includes(d.driver_class))
+filtered = transpose(data).filter((d) => pick_driver === d.driver_class)
 ```
 
 #### row 1 {height="10%"}
@@ -290,7 +290,7 @@ viewof combo_stat_1 = Inputs.select(
 ```{ojs}
 viewof combo_stat_2 = Inputs.select(
   ["speed", "acceleration", "weight", "handling"],
-  { value: "weight",
+  { value: "handling",
     label: "Stat 2:"
   }
 )

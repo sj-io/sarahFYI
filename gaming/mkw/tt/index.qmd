@@ -115,8 +115,8 @@ most_recent <- tt |>
 ```{r tblPB}
 pb_tbl <- best_tt |> 
   select(track, starts_with("date"), starts_with("time"), diff) |> 
-  mutate(across(starts_with("time"), as.character)) |> 
-  left_join(attempts)
+  left_join(attempts) |> 
+  mutate(across(starts_with("time"), ~ seconds_to_period(.) |> as.character()))
 
 reactable(pb_tbl,
   striped = TRUE, highlight = TRUE, wrap = FALSE,
@@ -146,14 +146,11 @@ reactable(pb_tbl,
 ```
 :::
 
-::: {.card title="no recorded times"}
+::: {.card title="all WRs"}
 ```{r}
-not_run <- wr |> anti_join(tt |> select(track), by = "track")
-not_run <- not_run |> 
-  select(track, player, date, time, character, kart) |> 
-  mutate(time = as.character(time))
+wr_tbl <- wr |> select(-label) |> mutate(time = as.character(time))
 
-reactable(not_run,
+reactable(wr_tbl,
   striped = TRUE, highlight = TRUE, wrap = FALSE,
   defaultSortOrder = "desc", compact = TRUE,
   pagination = FALSE, resizable = TRUE,
@@ -204,17 +201,17 @@ ggplotly(gg_tt_count)
 ```{r}
 #| title: WR comparison
 all_tt_sec <- all_tt |> 
-  # mutate(across(starts_with("time"), ~ period_to_seconds(.))) |> 
+  filter(track != "rainbow road") |> 
   mutate(sd = sd(time_pr), .by = "track")
-  # mutate(across(starts_with("time"), ~ period_to_seconds(.)))
-not_pr <- all_tt_sec |> anti_join(best_tt)
+  
+not_pr <- all_tt_sec |> anti_join(best_tt) |> filter(track != "rainbow road")
 gg_wr <- ggplot() +
   geom_point(
     data = not_pr, 
     aes(y = track, x = time_pr, text = label_pr), 
     color = "grey40", position = position_jitter()) +
   geom_point(
-    data = best_tt, 
+    data = best_tt |> filter(track != "rainbow road"), 
     aes(y = track, x = time_pr, text = label_pr), 
     color = "gold") +
   # geom_violin(
